@@ -507,7 +507,7 @@
 
   <script>
     const ADMIN_PASSWORD = "pieadmin123";
-    const DISCORD_WEBHOOK_URL = "YOUR_DISCORD_WEBHOOK_URL_HERE"; 
+    const DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1535009629833265335/BPTCTw-FaiWA4txRv9QiWWtl7JifNtTVxOoCNK9naYd2gQgko6HsTRCzWRx1GQ07TW4m"; 
     let isAdminAuthenticated = false;
 
     let submissions = [];
@@ -566,7 +566,7 @@
 
       submissions.unshift(submission);
 
-      if (type === 'Bug Report' && DISCORD_WEBHOOK_URL !== "YOUR_DISCORD_WEBHOOK_URL_HERE") {
+      if (type === 'Bug Report' && DISCORD_WEBHOOK_URL !== "") {
         const payload = {
           username: "PieSMP Bug Reporter",
           embeds: [{
@@ -656,4 +656,3 @@
   </script>
 </body>
 </html>
-
