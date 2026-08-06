@@ -28,7 +28,6 @@
       align-items: center;
     }
 
-    /* Navigation Bar */
     nav {
       width: 100%;
       max-width: 1000px;
@@ -80,7 +79,6 @@
       border-color: #ff6b6b;
     }
 
-    /* Main Container */
     .container {
       max-width: 800px;
       width: 90%;
@@ -101,7 +99,6 @@
     h1, h2 { color: var(--accent); margin-bottom: 12px; }
     p { color: var(--text-muted); line-height: 1.6; margin-bottom: 20px; }
 
-    /* Home Action Cards Grid */
     .btn-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -126,7 +123,6 @@
 
     .action-card h3 { color: #fff; margin-bottom: 8px; }
 
-    /* Forms */
     .form-group { margin-bottom: 18px; }
     label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 0.9rem; }
     .optional-tag { color: var(--text-muted); font-weight: normal; font-size: 0.8rem; }
@@ -144,7 +140,6 @@
     }
     .submit-btn:hover { background: var(--accent-hover); }
 
-    /* Staff Roster Grid */
     .staff-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -186,7 +181,6 @@
     .badge-dev { background: #2ecc71; color: #fff; }
     .badge-sradmin { background: #e67e22; color: #fff; }
 
-    /* Password Modal */
     .modal-overlay {
       display: none;
       position: fixed;
@@ -207,7 +201,6 @@
       text-align: center;
     }
 
-    /* Admin Applications View */
     .admin-controls {
       display: flex;
       justify-content: space-between;
@@ -261,7 +254,6 @@
 </head>
 <body>
 
-  <!-- Navigation Bar -->
   <nav>
     <div class="logo" onclick="showPage('home')">🥧 PieSMP</div>
     <div class="nav-links">
@@ -276,7 +268,6 @@
     </div>
   </nav>
 
-  <!-- Password Prompt Modal -->
   <div id="admin-modal" class="modal-overlay">
     <div class="modal">
       <h2>Admin Authentication</h2>
@@ -291,7 +282,6 @@
 
   <div class="container">
 
-    <!-- HOME PAGE -->
     <div id="home" class="page active">
       <h1>Welcome to PieSMP</h1>
       <p>PieSMP is a Minecraft Survival SMP built for community, economy, and content creation. Select an option below to apply, submit an appeal, report an issue, or leave a suggestion!</p>
@@ -329,7 +319,6 @@
       </div>
     </div>
 
-    <!-- STAFF / TEAM PAGE -->
     <div id="staff" class="page">
       <h2>PieSMP Staff Roster</h2>
       <p>Meet the team members keeping PieSMP safe, active, and running smoothly!</p>
@@ -352,7 +341,6 @@
       </div>
     </div>
 
-    <!-- STAFF APPLICATION PAGE -->
     <div id="apply" class="page">
       <h2>Staff Application</h2>
       <p>Submit your application below to apply for a staff position on PieSMP.</p>
@@ -383,7 +371,6 @@
       </form>
     </div>
 
-    <!-- MEDIA APPLICATION PAGE -->
     <div id="media" class="page">
       <h2>🎥 Media Application</h2>
       <p>Are you a content creator? Apply for the Media rank to gain special perks and promote your content on PieSMP!</p>
@@ -423,7 +410,6 @@
       </form>
     </div>
 
-    <!-- BAN APPEAL PAGE -->
     <div id="appeal" class="page">
       <h2>⚖️ Ban Appeal</h2>
       <p>If you were banned or muted on PieSMP and believe it was a mistake or you deserve a second chance, please submit an appeal below.</p>
@@ -459,10 +445,9 @@
       </form>
     </div>
 
-    <!-- REPORT BUGS PAGE -->
     <div id="bugs" class="page">
       <h2>🐛 Report a Bug</h2>
-      <p>Please provide details on any bugs or broken features you'found on PieSMP.</p>
+      <p>Please provide details on any bugs or broken features you've found on PieSMP.</p>
 
       <form onsubmit="handleFormSubmit(event, 'Bug Report')">
         <div class="form-group">
@@ -481,7 +466,6 @@
       </form>
     </div>
 
-    <!-- SUGGESTIONS PAGE -->
     <div id="suggest" class="page">
       <h2>💡 Suggest Anything</h2>
       <p>Have an idea to make PieSMP better? Share your ideas with the management team!</p>
@@ -508,7 +492,6 @@
       </form>
     </div>
 
-    <!-- ADMIN PANEL PAGE -->
     <div id="admin" class="page">
       <div class="admin-controls">
         <h2>🛠️ Admin Dashboard</h2>
@@ -517,18 +500,16 @@
       <p>Review active session applications, appeals, bug reports, and suggestions below.</p>
       
       <div id="admin-submissions-list">
-        <!-- Submissions Render Here -->
       </div>
     </div>
 
   </div>
 
   <script>
-    // Configuration Settings
     const ADMIN_PASSWORD = "pieadmin123";
+    const DISCORD_WEBHOOK_URL = "YOUR_DISCORD_WEBHOOK_URL_HERE"; 
     let isAdminAuthenticated = false;
 
-    // In-memory array replacing localStorage
     let submissions = [];
 
     function showPage(pageId) {
@@ -544,7 +525,6 @@
       }
     }
 
-    /* Admin Password Logic */
     function openAdminGate() {
       if (isAdminAuthenticated) {
         showPage('admin');
@@ -569,8 +549,7 @@
       }
     }
 
-    /* Handling Submissions with In-Memory Array */
-    function handleFormSubmit(event, type) {
+    async function handleFormSubmit(event, type) {
       event.preventDefault();
       const formData = new FormData(event.target);
       const submission = {
@@ -585,8 +564,33 @@
         submission.data[key] = value;
       });
 
-      // Push to runtime memory array
       submissions.unshift(submission);
+
+      if (type === 'Bug Report' && DISCORD_WEBHOOK_URL !== "YOUR_DISCORD_WEBHOOK_URL_HERE") {
+        const payload = {
+          username: "PieSMP Bug Reporter",
+          embeds: [{
+            title: "🐛 New Bug Report",
+            color: 16743196,
+            fields: [
+              { name: "Minecraft IGN", value: submission.data.ign || "Unknown", inline: true },
+              { name: "Summary", value: submission.data.summary || "No summary provided", inline: true },
+              { name: "How to Reproduce", value: submission.data.details || "No details provided" }
+            ],
+            footer: { text: `Submitted at ${submission.date}` }
+          }]
+        };
+
+        try {
+          await fetch(DISCORD_WEBHOOK_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+        } catch (err) {
+          console.error("Failed to post bug report to Discord:", err);
+        }
+      }
 
       alert(`${type} submitted successfully! Thanks for helping improve PieSMP.`);
       event.target.reset();
