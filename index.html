@@ -68,17 +68,6 @@
       background: rgba(255, 159, 28, 0.05);
     }
 
-    .nav-btn.admin-btn {
-      border-color: var(--danger);
-      color: var(--danger);
-    }
-
-    .nav-btn.admin-btn:hover, .nav-btn.admin-btn.active {
-      background: rgba(231, 76, 60, 0.1);
-      color: #ff6b6b;
-      border-color: #ff6b6b;
-    }
-
     .container {
       max-width: 800px;
       width: 90%;
@@ -180,76 +169,6 @@
     .badge-owner { background: #e74c3c; color: #fff; }
     .badge-dev { background: #2ecc71; color: #fff; }
     .badge-sradmin { background: #e67e22; color: #fff; }
-
-    .modal-overlay {
-      display: none;
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.8);
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-    }
-    .modal-overlay.active { display: flex; }
-    .modal {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      padding: 30px;
-      border-radius: 12px;
-      width: 90%;
-      max-width: 400px;
-      text-align: center;
-    }
-
-    .admin-controls {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-    }
-    .app-card {
-      background: #0d0d14;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 16px;
-      margin-bottom: 15px;
-    }
-    .app-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 8px;
-    }
-    .app-type {
-      background: rgba(255, 159, 28, 0.15);
-      color: var(--accent);
-      padding: 2px 8px;
-      border-radius: 4px;
-      font-size: 0.8rem;
-      font-weight: bold;
-    }
-    .app-body { font-size: 0.9rem; line-height: 1.5; }
-    .app-body div { margin-bottom: 6px; }
-    .app-actions {
-      display: flex;
-      gap: 10px;
-      margin-top: 12px;
-    }
-    .btn-approve {
-      background: var(--success); color: #000; border: none;
-      padding: 6px 12px; border-radius: 4px; font-weight: bold; cursor: pointer;
-    }
-    .btn-reject {
-      background: var(--danger); color: #fff; border: none;
-      padding: 6px 12px; border-radius: 4px; font-weight: bold; cursor: pointer;
-    }
-    .status-tag {
-      font-weight: bold;
-      font-size: 0.85rem;
-      text-transform: uppercase;
-    }
   </style>
 </head>
 <body>
@@ -264,21 +183,8 @@
       <button class="nav-btn" id="btn-appeal" onclick="showPage('appeal')">Ban Appeal</button>
       <button class="nav-btn" id="btn-bugs" onclick="showPage('bugs')">Report Bug</button>
       <button class="nav-btn" id="btn-suggest" onclick="showPage('suggest')">Suggest</button>
-      <button class="nav-btn admin-btn" id="btn-admin" onclick="openAdminGate()">🔒 Admin Panel</button>
     </div>
   </nav>
-
-  <div id="admin-modal" class="modal-overlay">
-    <div class="modal">
-      <h2>Admin Authentication</h2>
-      <p>Enter the master key to view pending applications.</p>
-      <div class="form-group">
-        <input type="password" id="admin-pass-input" placeholder="Enter Admin Password">
-      </div>
-      <button class="submit-btn" onclick="verifyAdminPassword()">Login</button>
-      <button class="nav-btn" style="margin-top: 10px; width: 100%;" onclick="closeAdminGate()">Cancel</button>
-    </div>
-  </div>
 
   <div class="container">
 
@@ -492,29 +398,14 @@
       </form>
     </div>
 
-    <div id="admin" class="page">
-      <div class="admin-controls">
-        <h2>🛠️ Admin Dashboard</h2>
-        <button class="nav-btn" onclick="clearAllSubmissions()" style="border-color: var(--danger); color: var(--danger);">Clear All Submissions</button>
-      </div>
-      <p>Review active session applications, appeals, bug reports, and suggestions below.</p>
-      
-      <div id="admin-submissions-list">
-      </div>
-    </div>
-
   </div>
 
   <script>
-    const ADMIN_PASSWORD = "pieadmin123";
     const BUGS_WEBHOOK_URL = "https://discord.com/api/webhooks/1535009629833265335/BPTCTw-FaiWA4txRv9QiWWtl7JifNtTVxOoCNK9naYd2gQgko6HsTRCzWRx1GQ07TW4m";
     const STAFF_WEBHOOK_URL = "https://discord.com/api/webhooks/1535012147870961736/VkC4ChBkyBYeX_4CHJzr0lKmpyLQyFSojkupLSwMxAacWnQZNLBDN4M8VZop-Dt3-q66"; 
     const MEDIA_WEBHOOK_URL = "https://discord.com/api/webhooks/1535062752987713566/vwmMtdhI81JZ7ZbGyKYESbGnTju54cfkSbJBF4a6b707xTZUlITkG402IZUWGhbx3upc";
     const APPEAL_WEBHOOK_URL = "https://discord.com/api/webhooks/1535064122910314501/pFxAx52qN5y8Q6wNBgJwP_aM4-LEUffT0smEMDwPjEXQ6jN3T591IIT9DF_8ARiS5RhR";
     const SUGGEST_WEBHOOK_URL = "https://discord.com/api/webhooks/1535065250607530044/57YBRpjhsqGoK8R8E1PRuC_blpg54iknT1Sd076rh5jn5LHTnb81Cf9mmtwzab4iMV2C";
-    let isAdminAuthenticated = false;
-
-    let submissions = [];
 
     function showPage(pageId) {
       document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
@@ -523,52 +414,19 @@
       document.getElementById(pageId).classList.add('active');
       const activeNavBtn = document.getElementById('btn-' + pageId);
       if (activeNavBtn) activeNavBtn.classList.add('active');
-      
-      if (pageId === 'admin') {
-        renderAdminSubmissions();
-      }
-    }
-
-    function openAdminGate() {
-      if (isAdminAuthenticated) {
-        showPage('admin');
-      } else {
-        document.getElementById('admin-modal').classList.add('active');
-      }
-    }
-
-    function closeAdminGate() {
-      document.getElementById('admin-modal').classList.remove('active');
-      document.getElementById('admin-pass-input').value = '';
-    }
-
-    function verifyAdminPassword() {
-      const inputPass = document.getElementById('admin-pass-input').value;
-      if (inputPass === ADMIN_PASSWORD) {
-        isAdminAuthenticated = true;
-        closeAdminGate();
-        showPage('admin');
-      } else {
-        alert("Incorrect Admin Password!");
-      }
     }
 
     async function handleFormSubmit(event, type) {
       event.preventDefault();
       const formData = new FormData(event.target);
       const submission = {
-        id: Date.now(),
-        type: type,
         date: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString(),
-        status: 'Pending',
         data: {}
       };
 
       formData.forEach((value, key) => {
         submission.data[key] = value;
       });
-
-      submissions.unshift(submission);
 
       // Handle Discord Webhooks
       let targetWebhook = null;
@@ -671,64 +529,6 @@
 
       alert(`${type} submitted successfully! Thanks for helping improve PieSMP.`);
       event.target.reset();
-    }
-
-    function renderAdminSubmissions() {
-      const container = document.getElementById('admin-submissions-list');
-
-      if (submissions.length === 0) {
-        container.innerHTML = '<p>No active applications or reports found in memory.</p>';
-        return;
-      }
-
-      container.innerHTML = submissions.map(sub => {
-        let detailsHtml = '';
-        for (const [key, value] of Object.entries(sub.data)) {
-          detailsHtml += `<div><strong>${key.toUpperCase()}:</strong> ${value}</div>`;
-        }
-
-        let statusColor = '#ff9f1c';
-        if (sub.status === 'Approved') statusColor = 'var(--success)';
-        if (sub.status === 'Rejected') statusColor = 'var(--danger)';
-
-        return `
-          <div class="app-card">
-            <div class="app-header">
-              <span class="app-type">${sub.type}</span>
-              <span class="status-tag" style="color: ${statusColor}">${sub.status}</span>
-              <span style="font-size: 0.8rem; color: var(--text-muted);">${sub.date}</span>
-            </div>
-            <div class="app-body">
-              ${detailsHtml}
-            </div>
-            <div class="app-actions">
-              <button class="btn-approve" onclick="updateStatus(${sub.id}, 'Approved')">Approve</button>
-              <button class="btn-reject" onclick="updateStatus(${sub.id}, 'Rejected')">Reject</button>
-              <button class="nav-btn" onclick="deleteSubmission(${sub.id})" style="margin-left: auto;">Delete</button>
-            </div>
-          </div>
-        `;
-      }).join('');
-    }
-
-    function updateStatus(id, newStatus) {
-      submissions = submissions.map(sub => {
-        if (sub.id === id) sub.status = newStatus;
-        return sub;
-      });
-      renderAdminSubmissions();
-    }
-
-    function deleteSubmission(id) {
-      submissions = submissions.filter(sub => sub.id !== id);
-      renderAdminSubmissions();
-    }
-
-    function clearAllSubmissions() {
-      if (confirm('Are you sure you want to clear all active submissions?')) {
-        submissions = [];
-        renderAdminSubmissions();
-      }
     }
   </script>
 </body>
