@@ -49,7 +49,7 @@
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
     }
 
     .nav-links {
@@ -138,6 +138,8 @@
     .mc-icon.nav { width: 18px; height: 18px; }
     .mc-icon.card { width: 22px; height: 22px; }
     .mc-icon.header { width: 32px; height: 32px; }
+    /* Bigger Pie Logo */
+    .mc-icon.logo-pie { width: 36px; height: 36px; }
 
     .form-group { margin-bottom: 18px; }
     label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 0.9rem; }
@@ -146,8 +148,24 @@
       width: 100%; padding: 12px; background: #0b0b10;
       border: 1px solid var(--border); border-radius: 6px; color: #fff;
     }
+    input[type="file"] {
+      padding: 8px;
+      cursor: pointer;
+      background: #0d0d14;
+    }
     input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent); }
     textarea { resize: vertical; min-height: 100px; }
+
+    .img-preview-container {
+      margin-top: 10px;
+      display: none;
+    }
+    .img-preview {
+      max-width: 100%;
+      max-height: 200px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+    }
 
     .submit-btn {
       width: 100%; padding: 14px; background: var(--accent);
@@ -202,7 +220,7 @@
 
   <nav>
     <div class="logo" onclick="showPage('home')">
-      <img src="https://minecraft.wiki/images/Pumpkin_Pie_JE2_BE2.png" referrerpolicy="no-referrer" class="mc-icon card" alt="Pie"> PieSMP
+      <img src="https://minecraft.wiki/images/Pumpkin_Pie_JE2_BE2.png" referrerpolicy="no-referrer" class="mc-icon logo-pie" alt="Pie"> PieSMP
     </div>
     <div class="nav-links">
       <button class="nav-btn active" id="btn-home" onclick="showPage('home')">
@@ -411,6 +429,13 @@
           <label>How to Reproduce the Bug</label>
           <textarea name="details" required placeholder="List the steps to recreate this glitch..."></textarea>
         </div>
+        <div class="form-group">
+          <label>Attach Screenshot / Proof <span class="optional-tag">(Optional, PNG/JPG)</span></label>
+          <input type="file" name="image" accept="image/*" onchange="previewImage(event, 'bug-img-preview')">
+          <div id="bug-img-preview" class="img-preview-container">
+            <img src="" alt="Preview" class="img-preview">
+          </div>
+        </div>
         <button type="submit" class="submit-btn">Submit Bug Report</button>
       </form>
     </div>
@@ -437,6 +462,13 @@
           <label>Describe your suggestion</label>
           <textarea name="details" required placeholder="Explain your idea in detail..."></textarea>
         </div>
+        <div class="form-group">
+          <label>Attach Mockup / Visual <span class="optional-tag">(Optional, PNG/JPG)</span></label>
+          <input type="file" name="image" accept="image/*" onchange="previewImage(event, 'suggest-img-preview')">
+          <div id="suggest-img-preview" class="img-preview-container">
+            <img src="" alt="Preview" class="img-preview">
+          </div>
+        </div>
         <button type="submit" class="submit-btn">Submit Suggestion</button>
       </form>
     </div>
@@ -459,110 +491,131 @@
       if (activeNavBtn) activeNavBtn.classList.add('active');
     }
 
+    function previewImage(event, previewContainerId) {
+      const container = document.getElementById(previewContainerId);
+      const imgTag = container.querySelector('img');
+      const file = event.target.files[0];
+
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          imgTag.src = e.target.result;
+          container.style.display = 'block';
+        }
+        reader.readAsDataURL(file);
+      } else {
+        container.style.display = 'none';
+        imgTag.src = '';
+      }
+    }
+
     async function handleFormSubmit(event, type) {
       event.preventDefault();
-      const formData = new FormData(event.target);
+      const formElement = event.target;
+      const formDataRaw = new FormData(formElement);
       const submission = {
         date: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString(),
         data: {}
       };
 
-      formData.forEach((value, key) => {
-        submission.data[key] = value;
+      let attachedFile = null;
+
+      formDataRaw.forEach((value, key) => {
+        if (key === 'image' && value instanceof File && value.size > 0) {
+          attachedFile = value;
+        } else {
+          submission.data[key] = value;
+        }
       });
 
       let targetWebhook = null;
-      let payload = null;
+      let embedPayload = null;
 
       if (type === 'Bug Report' && BUGS_WEBHOOK_URL !== "") {
         targetWebhook = BUGS_WEBHOOK_URL;
-        payload = {
-          username: "PieSMP Bug Reporter",
-          embeds: [{
-            title: "🐛 New Bug Report",
-            color: 16743196,
-            fields: [
-              { name: "Minecraft IGN", value: submission.data.ign || "Unknown", inline: true },
-              { name: "Summary", value: submission.data.summary || "No summary provided", inline: true },
-              { name: "How to Reproduce", value: submission.data.details || "No details provided" }
-            ],
-            footer: { text: `Submitted at ${submission.date}` }
-          }]
+        embedPayload = {
+          title: "🐛 New Bug Report",
+          color: 16743196,
+          fields: [
+            { name: "Minecraft IGN", value: submission.data.ign || "Unknown", inline: true },
+            { name: "Summary", value: submission.data.summary || "No summary provided", inline: true },
+            { name: "How to Reproduce", value: submission.data.details || "No details provided" }
+          ],
+          footer: { text: `Submitted at ${submission.date}` }
         };
       } else if (type === 'Staff Application' && STAFF_WEBHOOK_URL !== "") {
         targetWebhook = STAFF_WEBHOOK_URL;
-        payload = {
-          username: "PieSMP Staff Applications",
-          embeds: [{
-            title: "📋 New Staff Application",
-            color: 3066993,
-            fields: [
-              { name: "Minecraft IGN", value: submission.data.ign || "Unknown", inline: true },
-              { name: "Discord Tag", value: submission.data.discord || "Not provided", inline: true },
-              { name: "Position Applied For", value: submission.data.role || "Not specified", inline: true },
-              { name: "Why accept this application?", value: submission.data.details || "No details provided" }
-            ],
-            footer: { text: `Submitted at ${submission.date}` }
-          }]
+        embedPayload = {
+          title: "📋 New Staff Application",
+          color: 3066993,
+          fields: [
+            { name: "Minecraft IGN", value: submission.data.ign || "Unknown", inline: true },
+            { name: "Discord Tag", value: submission.data.discord || "Not provided", inline: true },
+            { name: "Position Applied For", value: submission.data.role || "Not specified", inline: true },
+            { name: "Why accept this application?", value: submission.data.details || "No details provided" }
+          ],
+          footer: { text: `Submitted at ${submission.date}` }
         };
       } else if (type === 'Media Application' && MEDIA_WEBHOOK_URL !== "") {
         targetWebhook = MEDIA_WEBHOOK_URL;
-        payload = {
-          username: "PieSMP Media Applications",
-          embeds: [{
-            title: "🎥 New Media Application",
-            color: 10181046,
-            fields: [
-              { name: "Minecraft IGN", value: submission.data.ign || "Unknown", inline: true },
-              { name: "Discord Tag", value: submission.data.discord || "Not provided", inline: true },
-              { name: "Platform", value: submission.data.platform || "Not specified", inline: true },
-              { name: "Channel Link", value: submission.data.link || "Not provided", inline: false },
-              { name: "Stats / Followers", value: submission.data.stats || "Not provided", inline: false },
-              { name: "Planned Content", value: submission.data.details || "No details provided", inline: false }
-            ],
-            footer: { text: `Submitted at ${submission.date}` }
-          }]
+        embedPayload = {
+          title: "🎥 New Media Application",
+          color: 10181046,
+          fields: [
+            { name: "Minecraft IGN", value: submission.data.ign || "Unknown", inline: true },
+            { name: "Discord Tag", value: submission.data.discord || "Not provided", inline: true },
+            { name: "Platform", value: submission.data.platform || "Not specified", inline: true },
+            { name: "Channel Link", value: submission.data.link || "Not provided", inline: false },
+            { name: "Stats / Followers", value: submission.data.stats || "Not provided", inline: false },
+            { name: "Planned Content", value: submission.data.details || "No details provided", inline: false }
+          ],
+          footer: { text: `Submitted at ${submission.date}` }
         };
       } else if (type === 'Ban Appeal' && APPEAL_WEBHOOK_URL !== "") {
         targetWebhook = APPEAL_WEBHOOK_URL;
-        payload = {
-          username: "PieSMP Ban Appeals",
-          embeds: [{
-            title: "🔨 New Ban Appeal",
-            color: 15158332,
-            fields: [
-              { name: "Minecraft IGN", value: submission.data.ign || "Unknown", inline: true },
-              { name: "Discord Tag", value: submission.data.discord || "Not provided", inline: true },
-              { name: "Punishment Type", value: submission.data.punishment || "Not specified", inline: true },
-              { name: "Reason Given", value: submission.data.reason || "Not provided", inline: false },
-              { name: "Appeal Defense / Explanation", value: submission.data.details || "No details provided", inline: false }
-            ],
-            footer: { text: `Submitted at ${submission.date}` }
-          }]
+        embedPayload = {
+          title: "🔨 New Ban Appeal",
+          color: 15158332,
+          fields: [
+            { name: "Minecraft IGN", value: submission.data.ign || "Unknown", inline: true },
+            { name: "Discord Tag", value: submission.data.discord || "Not provided", inline: true },
+            { name: "Punishment Type", value: submission.data.punishment || "Not specified", inline: true },
+            { name: "Reason Given", value: submission.data.reason || "Not provided", inline: false },
+            { name: "Appeal Defense / Explanation", value: submission.data.details || "No details provided", inline: false }
+          ],
+          footer: { text: `Submitted at ${submission.date}` }
         };
       } else if (type === 'Suggestion' && SUGGEST_WEBHOOK_URL !== "") {
         targetWebhook = SUGGEST_WEBHOOK_URL;
-        payload = {
-          username: "PieSMP Suggestions",
-          embeds: [{
-            title: "💡 New Suggestion",
-            color: 15844367,
-            fields: [
-              { name: "Minecraft IGN", value: submission.data.ign || "Unknown", inline: true },
-              { name: "Suggestion Type", value: submission.data.type || "General", inline: true },
-              { name: "Suggestion Details", value: submission.data.details || "No details provided", inline: false }
-            ],
-            footer: { text: `Submitted at ${submission.date}` }
-          }]
+        embedPayload = {
+          title: "💡 New Suggestion",
+          color: 15844367,
+          fields: [
+            { name: "Minecraft IGN", value: submission.data.ign || "Unknown", inline: true },
+            { name: "Suggestion Type", value: submission.data.type || "General", inline: true },
+            { name: "Suggestion Details", value: submission.data.details || "No details provided", inline: false }
+          ],
+          footer: { text: `Submitted at ${submission.date}` }
         };
       }
 
-      if (targetWebhook && payload) {
+      if (targetWebhook && embedPayload) {
         try {
+          const discordData = new FormData();
+
+          if (attachedFile) {
+            embedPayload.image = { url: "attachment://" + attachedFile.name };
+            discordData.append('files[0]', attachedFile, attachedFile.name);
+          }
+
+          discordData.append('payload_json', JSON.stringify({
+            username: `PieSMP Portal (${type})`,
+            embeds: [embedPayload]
+          }));
+
           await fetch(targetWebhook, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
+            body: discordData
           });
         } catch (err) {
           console.error("Failed to post submission to Discord:", err);
@@ -570,7 +623,8 @@
       }
 
       alert(`${type} submitted successfully! Thanks for helping improve PieSMP.`);
-      event.target.reset();
+      formElement.reset();
+      document.querySelectorAll('.img-preview-container').forEach(el => el.style.display = 'none');
     }
   </script>
 </body>
