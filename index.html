@@ -507,7 +507,8 @@
 
   <script>
     const ADMIN_PASSWORD = "pieadmin123";
-    const DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1535009629833265335/BPTCTw-FaiWA4txRv9QiWWtl7JifNtTVxOoCNK9naYd2gQgko6HsTRCzWRx1GQ07TW4m"; 
+    const BUGS_WEBHOOK_URL = "https://discord.com/api/webhooks/1535009629833265335/BPTCTw-FaiWA4txRv9QiWWtl7JifNtTVxOoCNK9naYd2gQgko6HsTRCzWRx1GQ07TW4m";
+    const STAFF_WEBHOOK_URL = "https://discord.com/api/webhooks/1535012147870961736/VkC4ChBkyBYeX_4CHJzr0lKmpyLQyFSojkupLSwMxAacWnQZNLBDN4M8VZop-Dt3-q66"; 
     let isAdminAuthenticated = false;
 
     let submissions = [];
@@ -566,8 +567,13 @@
 
       submissions.unshift(submission);
 
-      if (type === 'Bug Report' && DISCORD_WEBHOOK_URL !== "") {
-        const payload = {
+      // Handle Discord Webhooks
+      let targetWebhook = null;
+      let payload = null;
+
+      if (type === 'Bug Report' && BUGS_WEBHOOK_URL !== "") {
+        targetWebhook = BUGS_WEBHOOK_URL;
+        payload = {
           username: "PieSMP Bug Reporter",
           embeds: [{
             title: "🐛 New Bug Report",
@@ -580,15 +586,33 @@
             footer: { text: `Submitted at ${submission.date}` }
           }]
         };
+      } else if (type === 'Staff Application' && STAFF_WEBHOOK_URL !== "") {
+        targetWebhook = STAFF_WEBHOOK_URL;
+        payload = {
+          username: "PieSMP Staff Applications",
+          embeds: [{
+            title: "📋 New Staff Application",
+            color: 3066993,
+            fields: [
+              { name: "Minecraft IGN", value: submission.data.ign || "Unknown", inline: true },
+              { name: "Discord Tag", value: submission.data.discord || "Not provided", inline: true },
+              { name: "Position Applied For", value: submission.data.role || "Not specified", inline: true },
+              { name: "Why accept this application?", value: submission.data.details || "No details provided" }
+            ],
+            footer: { text: `Submitted at ${submission.date}` }
+          }]
+        };
+      }
 
+      if (targetWebhook && payload) {
         try {
-          await fetch(DISCORD_WEBHOOK_URL, {
+          await fetch(targetWebhook, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
           });
         } catch (err) {
-          console.error("Failed to post bug report to Discord:", err);
+          console.error("Failed to post submission to Discord:", err);
         }
       }
 
