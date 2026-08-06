@@ -116,6 +116,14 @@
 
     .action-card h3 { color: #fff; margin-bottom: 8px; }
 
+    .mc-mace-icon {
+      width: 22px;
+      height: 22px;
+      vertical-align: sub;
+      image-rendering: pixelated;
+      margin-right: 4px;
+    }
+
     .form-group { margin-bottom: 18px; }
     label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 0.9rem; }
     .optional-tag { color: var(--text-muted); font-weight: normal; font-size: 0.8rem; }
@@ -213,7 +221,7 @@
         </div>
 
         <div class="action-card" onclick="showPage('appeal')">
-          <h3>⚖️ Ban Appeal</h3>
+          <h3><img src="https://minecraft.wiki/images/Mace_JE1_BE1.png" class="mc-mace-icon" alt="Mace"> Ban Appeal</h3>
           <p>Banned or punished? Submit an appeal for review by staff.</p>
         </div>
 
@@ -321,7 +329,7 @@
     </div>
 
     <div id="appeal" class="page">
-      <h2>⚖️ Ban Appeal</h2>
+      <h2><img src="https://minecraft.wiki/images/Mace_JE1_BE1.png" class="mc-mace-icon" style="width:28px; height:28px;" alt="Mace"> Ban Appeal</h2>
       <p>If you were banned or muted on PieSMP and believe it was a mistake or you deserve a second chance, please submit an appeal below.</p>
 
       <form onsubmit="handleFormSubmit(event, 'Ban Appeal')">
@@ -490,7 +498,7 @@
         payload = {
           username: "PieSMP Ban Appeals",
           embeds: [{
-            title: "⚖️ New Ban Appeal",
+            title: "🔨 New Ban Appeal",
             color: 15158332,
             fields: [
               { name: "Minecraft IGN", value: submission.data.ign || "Unknown", inline: true },
