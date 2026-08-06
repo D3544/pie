@@ -69,7 +69,7 @@
       transition: all 0.2s;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
     }
 
     .nav-btn:hover, .nav-btn.active {
@@ -129,16 +129,17 @@
       gap: 8px;
     }
 
-    /* Pixelated Minecraft Icons (Base64 Embedded) */
-    .mc-icon {
+    /* Embedded Pixelated Minecraft SVGs */
+    .mc-svg {
+      display: inline-block;
+      vertical-align: middle;
       image-rendering: pixelated;
-      image-rendering: crisp-edges;
-      object-fit: contain;
+      shape-rendering: crispEdges;
     }
-    .mc-icon.nav { width: 20px; height: 20px; }
-    .mc-icon.card { width: 24px; height: 24px; }
-    .mc-icon.header { width: 30px; height: 30px; }
-    .mc-icon.logo-pie { width: 34px; height: 34px; }
+    .mc-svg.nav { width: 20px; height: 20px; }
+    .mc-svg.card { width: 24px; height: 24px; }
+    .mc-svg.header { width: 32px; height: 32px; }
+    .mc-svg.logo-pie { width: 32px; height: 32px; }
 
     .form-group { margin-bottom: 18px; }
     label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 0.9rem; }
@@ -218,45 +219,111 @@
 </head>
 <body>
 
-  <!-- EMBEDDED MINECRAFT TEXTURE DATA URIS -->
-  <script>
-    const MC_ICONS = {
-      pie: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAANElEQVQ4T2NkYGAQY2Bg4GdgYGAE4v9A/J8B3SAnEDMA8Ssgno1LHS434XIDCgY4ACpGHQAAPv0P+S5xYdMAAAAASUVORK5CYII=",
-      grass: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAUklEQVQ4T2NkoBAwUqifAasB4+Pj/2fOnMnAxcXFgC4Il2A8fvx4BnLiDJsBY434eI34NIB4A6SGHwYm2A1A8QEuLq4f6IphAByugfAaSACjFQAAPscY/mN0Gf8AAAAASUVORK5CYII=",
-      sword: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAARElEQVQ4T2NkYGAQY2Bg4GfAB0AA4f9A/J8B2SC4BhS3kGMAMgBfXBCvgfAaSACDPh61AEE3IBsA9z1M9TDX4XIDpS4AALEcGf4b6+dJAAAAAElFTkSuQmCC",
-      book: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAR0lEQVQ4T2NkYGAQY2Bg4GfAB2AMx/8xANkgSg2AqwFmCLmG4PMLIeA/3E3oAtgMwS3EaAC+8MGlAcU30A0Aed4pDhcjK3UBALf2D/msOimqAAAAAElFTkSuQmCC",
-      repeater: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAO0lEQVQ4T2NkYGAQY2Bg4GfAB0AA4f9A/B+XpYw4vEaOBmC4AC5/gBxg+OOBm2sIARAtuACpvhv1LQAAt0UY/k2PmycAAAAASUVORK5CYII=",
-      axe: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAOklEQVQ4T2NkYGAQY2Bg4GfAB0AA4f9A/A+XpXgMwqUAGx4wGkCUB4Y14HAHQ18fI1kDAXfAwh5dHQBbfRn+0pIq3gAAAABJRU5C2state=",
-      barrier: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAARElEQVQ4T2NkoBAwUqifAWmA/3/Gf1x4OAG8BuBoAK4O2X8Y/2PyAEININcA43/A0B9sALo6aA2gvgYQ14A4t1LqCQC1oBh+i+pY5gAAAABJRU5C2state=",
-      lamp: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAOElEQVQ4T2NkYGAQY2Bg4GfAB44fP/7/wIEDGfADXAaMNYLRAHIcMNLdAKmB2LjgAtgMYNQLyDUAAKeaE/62oIq7AAAAAElFTkSuQmCC"
-    };
-  </script>
+  <!-- REUSABLE MINECRAFT PIXEL SVG SYMBOLS -->
+  <svg style="display: none;">
+    <!-- Pumpkin Pie -->
+    <g id="icon-pie">
+      <rect x="2" y="10" width="12" height="4" fill="#c05a11"/>
+      <rect x="1" y="8" width="14" height="2" fill="#e2882b"/>
+      <rect x="3" y="5" width="10" height="3" fill="#f8b042"/>
+      <rect x="6" y="3" width="4" height="2" fill="#ffffff"/>
+      <rect x="2" y="14" width="12" height="1" fill="#7a3403"/>
+    </g>
+
+    <!-- Grass Block -->
+    <g id="icon-grass">
+      <rect x="1" y="1" width="14" height="5" fill="#5b8731"/>
+      <rect x="1" y="6" width="14" height="9" fill="#866043"/>
+      <rect x="3" y="6" width="2" height="3" fill="#5b8731"/>
+      <rect x="8" y="6" width="2" height="2" fill="#5b8731"/>
+      <rect x="12" y="6" width="2" height="3" fill="#5b8731"/>
+      <rect x="2" y="11" width="2" height="2" fill="#573d2a"/>
+      <rect x="10" y="10" width="3" height="2" fill="#573d2a"/>
+    </g>
+
+    <!-- Diamond Sword -->
+    <g id="icon-sword">
+      <rect x="11" y="2" width="3" height="3" fill="#47e3d4"/>
+      <rect x="9" y="4" width="3" height="3" fill="#47e3d4"/>
+      <rect x="7" y="6" width="3" height="3" fill="#47e3d4"/>
+      <rect x="5" y="8" width="3" height="3" fill="#47e3d4"/>
+      <rect x="3" y="10" width="3" height="3" fill="#2c9b91"/>
+      <rect x="2" y="12" width="3" height="2" fill="#6a492b"/>
+      <rect x="1" y="13" width="2" height="2" fill="#402813"/>
+    </g>
+
+    <!-- Book & Quill -->
+    <g id="icon-book">
+      <rect x="2" y="2" width="11" height="12" fill="#8e2a2a"/>
+      <rect x="1" y="3" width="1" height="10" fill="#5c1919"/>
+      <rect x="4" y="3" width="8" height="10" fill="#f3ebd3"/>
+      <rect x="5" y="5" width="6" height="1" fill="#40382b"/>
+      <rect x="5" y="7" width="6" height="1" fill="#40382b"/>
+      <rect x="5" y="9" width="4" height="1" fill="#40382b"/>
+      <rect x="11" y="1" width="3" height="5" fill="#ffffff"/>
+    </g>
+
+    <!-- Redstone Repeater -->
+    <g id="icon-repeater">
+      <rect x="1" y="10" width="14" height="4" fill="#727272"/>
+      <rect x="2" y="9" width="12" height="1" fill="#999999"/>
+      <rect x="4" y="5" width="2" height="4" fill="#666666"/>
+      <rect x="4" y="4" width="2" height="1" fill="#ff2200"/>
+      <rect x="10" y="6" width="2" height="3" fill="#666666"/>
+      <rect x="10" y="5" width="2" height="1" fill="#ff2200"/>
+    </g>
+
+    <!-- Diamond Axe -->
+    <g id="icon-axe">
+      <rect x="8" y="2" width="5" height="2" fill="#47e3d4"/>
+      <rect x="7" y="4" width="7" height="3" fill="#47e3d4"/>
+      <rect x="6" y="7" width="3" height="2" fill="#2c9b91"/>
+      <rect x="5" y="7" width="2" height="2" fill="#6a492b"/>
+      <rect x="3" y="9" width="2" height="2" fill="#6a492b"/>
+      <rect x="1" y="11" width="2" height="2" fill="#402813"/>
+    </g>
+
+    <!-- Barrier Block (Bug / Ban Icon) -->
+    <g id="icon-barrier">
+      <circle cx="8" cy="8" r="6" stroke="#e74c3c" stroke-width="2" fill="none"/>
+      <line x1="4" y1="4" x2="12" y2="12" stroke="#e74c3c" stroke-width="2"/>
+    </g>
+
+    <!-- Redstone Lamp -->
+    <g id="icon-lamp">
+      <rect x="1" y="1" width="14" height="14" fill="#71421e"/>
+      <rect x="2" y="2" width="12" height="12" fill="#f39c12"/>
+      <rect x="4" y="4" width="8" height="8" fill="#f1c40f"/>
+      <rect x="6" y="6" width="4" height="4" fill="#ffffff"/>
+    </g>
+  </svg>
 
   <nav>
     <div class="logo" onclick="showPage('home')">
-      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAIElEQVQ4T2NkoBAwUqifAWnAqAEjE4yGATwwagCNGkAAAC2YAGmQ+eUCAAAAAElFTkSuQmCC" id="icon-logo" class="mc-icon logo-pie" alt="Pie"> PieSMP
+      <svg class="mc-svg logo-pie" viewBox="0 0 16 16"><use href="#icon-pie"/></svg>
+      PieSMP
     </div>
     <div class="nav-links">
       <button class="nav-btn active" id="btn-home" onclick="showPage('home')">
-        <img id="icon-nav-home" class="mc-icon nav" alt="Home"> Home
+        <svg class="mc-svg nav" viewBox="0 0 16 16"><use href="#icon-grass"/></svg> Home
       </button>
       <button class="nav-btn" id="btn-staff" onclick="showPage('staff')">
-        <img id="icon-nav-staff" class="mc-icon nav" alt="Staff"> Our Team
+        <svg class="mc-svg nav" viewBox="0 0 16 16"><use href="#icon-sword"/></svg> Our Team
       </button>
       <button class="nav-btn" id="btn-apply" onclick="showPage('apply')">
-        <img id="icon-nav-apply" class="mc-icon nav" alt="Apply"> Apply Staff
+        <svg class="mc-svg nav" viewBox="0 0 16 16"><use href="#icon-book"/></svg> Apply Staff
       </button>
       <button class="nav-btn" id="btn-media" onclick="showPage('media')">
-        <img id="icon-nav-media" class="mc-icon nav" alt="Media"> Apply Media
+        <svg class="mc-svg nav" viewBox="0 0 16 16"><use href="#icon-repeater"/></svg> Apply Media
       </button>
       <button class="nav-btn" id="btn-appeal" onclick="showPage('appeal')">
-        <img id="icon-nav-appeal" class="mc-icon nav" alt="Appeal"> Ban Appeal
+        <svg class="mc-svg nav" viewBox="0 0 16 16"><use href="#icon-axe"/></svg> Ban Appeal
       </button>
       <button class="nav-btn" id="btn-bugs" onclick="showPage('bugs')">
-        <img id="icon-nav-bugs" class="mc-icon nav" alt="Bug"> Report Bug
+        <svg class="mc-svg nav" viewBox="0 0 16 16"><use href="#icon-barrier"/></svg> Report Bug
       </button>
       <button class="nav-btn" id="btn-suggest" onclick="showPage('suggest')">
-        <img id="icon-nav-suggest" class="mc-icon nav" alt="Suggest"> Suggest
+        <svg class="mc-svg nav" viewBox="0 0 16 16"><use href="#icon-lamp"/></svg> Suggest
       </button>
     </div>
   </nav>
@@ -264,44 +331,47 @@
   <div class="container">
 
     <div id="home" class="page active">
-      <h1><img id="icon-head-home" class="mc-icon header" alt="Grass"> Welcome to PieSMP</h1>
+      <h1>
+        <svg class="mc-svg header" viewBox="0 0 16 16"><use href="#icon-grass"/></svg>
+        Welcome to PieSMP
+      </h1>
       <p>PieSMP is a Minecraft Survival SMP built for community, economy, and content creation. Select an option below to apply, submit an appeal, report an issue, or leave a suggestion!</p>
       
       <div class="btn-grid">
         <div class="action-card" onclick="showPage('staff')">
-          <h3><img id="icon-card-staff" class="mc-icon card" alt="Staff"> Meet Staff</h3>
+          <h3><svg class="mc-svg card" viewBox="0 0 16 16"><use href="#icon-sword"/></svg> Meet Staff</h3>
           <p>See our active staff members and server management.</p>
         </div>
 
         <div class="action-card" onclick="showPage('apply')">
-          <h3><img id="icon-card-apply" class="mc-icon card" alt="Book"> Staff App</h3>
+          <h3><svg class="mc-svg card" viewBox="0 0 16 16"><use href="#icon-book"/></svg> Staff App</h3>
           <p>Apply to join our moderation and server staff team.</p>
         </div>
 
         <div class="action-card" onclick="showPage('media')">
-          <h3><img id="icon-card-media" class="mc-icon card" alt="Media"> Media App</h3>
+          <h3><svg class="mc-svg card" viewBox="0 0 16 16"><use href="#icon-repeater"/></svg> Media App</h3>
           <p>Apply for content creator, YouTube, or Twitch roles.</p>
         </div>
 
         <div class="action-card" onclick="showPage('appeal')">
-          <h3><img id="icon-card-appeal" class="mc-icon card" alt="Axe"> Ban Appeal</h3>
+          <h3><svg class="mc-svg card" viewBox="0 0 16 16"><use href="#icon-axe"/></svg> Ban Appeal</h3>
           <p>Banned or punished? Submit an appeal for review by staff.</p>
         </div>
 
         <div class="action-card" onclick="showPage('bugs')">
-          <h3><img id="icon-card-bugs" class="mc-icon card" alt="Bug"> Report Bugs</h3>
+          <h3><svg class="mc-svg card" viewBox="0 0 16 16"><use href="#icon-barrier"/></svg> Report Bugs</h3>
           <p>Found a glitch or broken plugin? Let us know here.</p>
         </div>
 
         <div class="action-card" onclick="showPage('suggest')">
-          <h3><img id="icon-card-suggest" class="mc-icon card" alt="Lamp"> Suggestions</h3>
+          <h3><svg class="mc-svg card" viewBox="0 0 16 16"><use href="#icon-lamp"/></svg> Suggestions</h3>
           <p>Have an idea for a feature or event? Suggest it!</p>
         </div>
       </div>
     </div>
 
     <div id="staff" class="page">
-      <h2><img id="icon-head-staff" class="mc-icon header" alt="Staff"> PieSMP Staff Roster</h2>
+      <h2><svg class="mc-svg header" viewBox="0 0 16 16"><use href="#icon-sword"/></svg> PieSMP Staff Roster</h2>
       <p>Meet the team members keeping PieSMP safe, active, and running smoothly!</p>
 
       <div class="staff-grid">
@@ -324,7 +394,7 @@
     </div>
 
     <div id="apply" class="page">
-      <h2><img id="icon-head-apply" class="mc-icon header" alt="Book"> Staff Application</h2>
+      <h2><svg class="mc-svg header" viewBox="0 0 16 16"><use href="#icon-book"/></svg> Staff Application</h2>
       <p>Submit your application below to apply for a staff position on PieSMP.</p>
 
       <form onsubmit="handleFormSubmit(event, 'Staff Application')">
@@ -354,7 +424,7 @@
     </div>
 
     <div id="media" class="page">
-      <h2><img id="icon-head-media" class="mc-icon header" alt="Media"> Media Application</h2>
+      <h2><svg class="mc-svg header" viewBox="0 0 16 16"><use href="#icon-repeater"/></svg> Media Application</h2>
       <p>Are you a content creator? Apply for the Media rank to gain special perks and promote your content on PieSMP!</p>
 
       <form onsubmit="handleFormSubmit(event, 'Media Application')">
@@ -393,7 +463,7 @@
     </div>
 
     <div id="appeal" class="page">
-      <h2><img id="icon-head-appeal" class="mc-icon header" alt="Axe"> Ban Appeal</h2>
+      <h2><svg class="mc-svg header" viewBox="0 0 16 16"><use href="#icon-axe"/></svg> Ban Appeal</h2>
       <p>If you were banned or muted on PieSMP and believe it was a mistake or you deserve a second chance, please submit an appeal below.</p>
 
       <form onsubmit="handleFormSubmit(event, 'Ban Appeal')">
@@ -428,7 +498,7 @@
     </div>
 
     <div id="bugs" class="page">
-      <h2><img id="icon-head-bugs" class="mc-icon header" alt="Bug"> Report a Bug</h2>
+      <h2><svg class="mc-svg header" viewBox="0 0 16 16"><use href="#icon-barrier"/></svg> Report a Bug</h2>
       <p>Please provide details on any bugs or broken features you've found on PieSMP.</p>
 
       <form onsubmit="handleFormSubmit(event, 'Bug Report')">
@@ -456,7 +526,7 @@
     </div>
 
     <div id="suggest" class="page">
-      <h2><img id="icon-head-suggest" class="mc-icon header" alt="Lamp"> Suggest Anything</h2>
+      <h2><svg class="mc-svg header" viewBox="0 0 16 16"><use href="#icon-lamp"/></svg> Suggest Anything</h2>
       <p>Have an idea to make PieSMP better? Share your ideas with the management team!</p>
 
       <form onsubmit="handleFormSubmit(event, 'Suggestion')">
@@ -491,34 +561,6 @@
   </div>
 
   <script>
-    // Bind Base64 Minecraft Textures cleanly
-    document.addEventListener("DOMContentLoaded", () => {
-      document.getElementById('icon-logo').src = MC_ICONS.pie;
-      
-      document.getElementById('icon-nav-home').src = MC_ICONS.grass;
-      document.getElementById('icon-nav-staff').src = MC_ICONS.sword;
-      document.getElementById('icon-nav-apply').src = MC_ICONS.book;
-      document.getElementById('icon-nav-media').src = MC_ICONS.repeater;
-      document.getElementById('icon-nav-appeal').src = MC_ICONS.axe;
-      document.getElementById('icon-nav-bugs').src = MC_ICONS.barrier;
-      document.getElementById('icon-nav-suggest').src = MC_ICONS.lamp;
-
-      document.getElementById('icon-head-home').src = MC_ICONS.grass;
-      document.getElementById('icon-head-staff').src = MC_ICONS.sword;
-      document.getElementById('icon-head-apply').src = MC_ICONS.book;
-      document.getElementById('icon-head-media').src = MC_ICONS.repeater;
-      document.getElementById('icon-head-appeal').src = MC_ICONS.axe;
-      document.getElementById('icon-head-bugs').src = MC_ICONS.barrier;
-      document.getElementById('icon-head-suggest').src = MC_ICONS.lamp;
-
-      document.getElementById('icon-card-staff').src = MC_ICONS.sword;
-      document.getElementById('icon-card-apply').src = MC_ICONS.book;
-      document.getElementById('icon-card-media').src = MC_ICONS.repeater;
-      document.getElementById('icon-card-appeal').src = MC_ICONS.axe;
-      document.getElementById('icon-card-bugs').src = MC_ICONS.barrier;
-      document.getElementById('icon-card-suggest').src = MC_ICONS.lamp;
-    });
-
     const BUGS_WEBHOOK_URL = "https://discord.com/api/webhooks/1535009629833265335/BPTCTw-FaiWA4txRv9QiWWtl7JifNtTVxOoCNK9naYd2gQgko6HsTRCzWRx1GQ07TW4m";
     const STAFF_WEBHOOK_URL = "https://discord.com/api/webhooks/1535012147870961736/VkC4ChBkyBYeX_4CHJzr0lKmpyLQyFSojkupLSwMxAacWnQZNLBDN4M8VZop-Dt3-q66"; 
     const MEDIA_WEBHOOK_URL = "https://discord.com/api/webhooks/1535062752987713566/vwmMtdhI81JZ7ZbGyKYESbGnTju54cfkSbJBF4a6b707xTZUlITkG402IZUWGhbx3upc";
