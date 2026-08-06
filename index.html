@@ -511,6 +511,7 @@
     const STAFF_WEBHOOK_URL = "https://discord.com/api/webhooks/1535012147870961736/VkC4ChBkyBYeX_4CHJzr0lKmpyLQyFSojkupLSwMxAacWnQZNLBDN4M8VZop-Dt3-q66"; 
     const MEDIA_WEBHOOK_URL = "https://discord.com/api/webhooks/1535062752987713566/vwmMtdhI81JZ7ZbGyKYESbGnTju54cfkSbJBF4a6b707xTZUlITkG402IZUWGhbx3upc";
     const APPEAL_WEBHOOK_URL = "https://discord.com/api/webhooks/1535064122910314501/pFxAx52qN5y8Q6wNBgJwP_aM4-LEUffT0smEMDwPjEXQ6jN3T591IIT9DF_8ARiS5RhR";
+    const SUGGEST_WEBHOOK_URL = "https://discord.com/api/webhooks/1535065250607530044/57YBRpjhsqGoK8R8E1PRuC_blpg54iknT1Sd076rh5jn5LHTnb81Cf9mmtwzab4iMV2C";
     let isAdminAuthenticated = false;
 
     let submissions = [];
@@ -635,6 +636,21 @@
               { name: "Punishment Type", value: submission.data.punishment || "Not specified", inline: true },
               { name: "Reason Given", value: submission.data.reason || "Not provided", inline: false },
               { name: "Appeal Defense / Explanation", value: submission.data.details || "No details provided", inline: false }
+            ],
+            footer: { text: `Submitted at ${submission.date}` }
+          }]
+        };
+      } else if (type === 'Suggestion' && SUGGEST_WEBHOOK_URL !== "") {
+        targetWebhook = SUGGEST_WEBHOOK_URL;
+        payload = {
+          username: "PieSMP Suggestions",
+          embeds: [{
+            title: "💡 New Suggestion",
+            color: 15844367,
+            fields: [
+              { name: "Minecraft IGN", value: submission.data.ign || "Unknown", inline: true },
+              { name: "Suggestion Type", value: submission.data.type || "General", inline: true },
+              { name: "Suggestion Details", value: submission.data.details || "No details provided", inline: false }
             ],
             footer: { text: `Submitted at ${submission.date}` }
           }]
