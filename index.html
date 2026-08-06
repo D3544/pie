@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PieSMP - Official Portal</title>
+  <style>
+    :root {
+      --bg: #0b0b10;
+      --card-bg: #151520;
+      --accent: #ff9f1c;
+      --accent-hover: #ffb703;
+      --text: #f0f0f5;
+      --text-muted: #9090a8;
+      --border: #232335;
+      --danger: #e74c3c;
+      --success: #2ecc71;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Navigation Bar */
+    nav {
+      width: 100%;
+      max-width: 1000px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo {
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: var(--accent);
+      cursor: pointer;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .nav-btn {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-muted);
+      padding: 8px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .nav-btn:hover, .nav-btn.active {
+      color: var(--accent);
+      border-color: var(--accent);
+      background: rgba(255, 159, 28, 0.05);
+    }
+
+    .nav-btn.admin-btn {
+      border-color: var(--danger);
+      color: var(--danger);
+    }
+
+    .nav-btn.admin-btn:hover, .nav-btn.admin-btn.active {
+      background: rgba(231, 76, 60, 0.1);
+      color: #ff6b6b;
+      border-color: #ff6b6b;
+    }
+
+    /* Main Container */
+    .container {
+      max-width: 800px;
+      width: 90%;
+      margin: 40px auto;
+    }
+
+    .page {
+      display: none;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 32px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    .page.active { display: block; }
+
+    h1, h2 { color: var(--accent); margin-bottom: 12px; }
+    p { color: var(--text-muted); line-height: 1.6; margin-bottom: 20px; }
+
+    /* Home Action Cards Grid */
+    .btn-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 15px;
+      margin-top: 25px;
+    }
+
+    .action-card {
+      background: #0d0d14;
+      border: 1px solid var(--border);
+      padding: 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      text-align: center;
+      transition: border-color 0.2s, transform 0.1s;
+    }
+
+    .action-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .action-card h3 { color: #fff; margin-bottom: 8px; }
+
+    /* Forms */
+    .form-group { margin-bottom: 18px; }
+    label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 0.9rem; }
+    .optional-tag { color: var(--text-muted); font-weight: normal; font-size: 0.8rem; }
+    input, select, textarea {
+      width: 100%; padding: 12px; background: #0b0b10;
+      border: 1px solid var(--border); border-radius: 6px; color: #fff;
+    }
+    input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent); }
+    textarea { resize: vertical; min-height: 100px; }
+
+    .submit-btn {
+      width: 100%; padding: 14px; background: var(--accent);
+      color: #0d0d12; border: none; border-radius: 6px;
+      font-size: 1rem; font-weight: bold; cursor: pointer;
+    }
+    .submit-btn:hover { background: var(--accent-hover); }
+
+    /* Staff Roster Grid */
+    .staff-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 15px;
+      margin-top: 15px;
+    }
+    .staff-card {
+      background: #0d0d14;
+      border: 1px solid var(--border);
+      padding: 20px 15px;
+      border-radius: 8px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .staff-avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      image-rendering: pixelated;
+      border: 2px solid var(--border);
+    }
+    .staff-card h3 {
+      font-size: 1.1rem;
+      margin-bottom: 4px;
+      color: #fff;
+    }
+    .role-badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      margin-top: 5px;
+    }
+    .badge-owner { background: #e74c3c; color: #fff; }
+    .badge-dev { background: #2ecc71; color: #fff; }
+    .badge-sradmin { background: #e67e22; color: #fff; }
+
+    /* Password Modal */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .modal-overlay.active { display: flex; }
+    .modal {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      padding: 30px;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    /* Admin Applications View */
+    .admin-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .app-card {
+      background: #0d0d14;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 15px;
+    }
+    .app-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 8px;
+    }
+    .app-type {
+      background: rgba(255, 159, 28, 0.15);
+      color: var(--accent);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      font-weight: bold;
+    }
+    .app-body { font-size: 0.9rem; line-height: 1.5; }
+    .app-body div { margin-bottom: 6px; }
+    .app-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .btn-approve {
+      background: var(--success); color: #000; border: none;
+      padding: 6px 12px; border-radius: 4px; font-weight: bold; cursor: pointer;
+    }
+    .btn-reject {
+      background: var(--danger); color: #fff; border: none;
+      padding: 6px 12px; border-radius: 4px; font-weight: bold; cursor: pointer;
+    }
+    .status-tag {
+      font-weight: bold;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav>
+    <div class="logo" onclick="showPage('home')">🥧 PieSMP</div>
+    <div class="nav-links">
+      <button class="nav-btn active" id="btn-home" onclick="showPage('home')">Home</button>
+      <button class="nav-btn" id="btn-staff" onclick="showPage('staff')">Our Team</button>
+      <button class="nav-btn" id="btn-apply" onclick="showPage('apply')">Apply Staff</button>
+      <button class="nav-btn" id="btn-media" onclick="showPage('media')">Apply Media</button>
+      <button class="nav-btn" id="btn-appeal" onclick="showPage('appeal')">Ban Appeal</button>
+      <button class="nav-btn" id="btn-bugs" onclick="showPage('bugs')">Report Bug</button>
+      <button class="nav-btn" id="btn-suggest" onclick="showPage('suggest')">Suggest</button>
+      <button class="nav-btn admin-btn" id="btn-admin" onclick="openAdminGate()">🔒 Admin Panel</button>
+    </div>
+  </nav>
+
+  <!-- Password Prompt Modal -->
+  <div id="admin-modal" class="modal-overlay">
+    <div class="modal">
+      <h2>Admin Authentication</h2>
+      <p>Enter the master key to view pending applications.</p>
+      <div class="form-group">
+        <input type="password" id="admin-pass-input" placeholder="Enter Admin Password">
+      </div>
+      <button class="submit-btn" onclick="verifyAdminPassword()">Login</button>
+      <button class="nav-btn" style="margin-top: 10px; width: 100%;" onclick="closeAdminGate()">Cancel</button>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <!-- HOME PAGE -->
+    <div id="home" class="page active">
+      <h1>Welcome to PieSMP</h1>
+      <p>PieSMP is a Minecraft Survival SMP built for community, economy, and content creation. Select an option below to apply, submit an appeal, report an issue, or leave a suggestion!</p>
+      
+      <div class="btn-grid">
+        <div class="action-card" onclick="showPage('staff')">
+          <h3>🛡️ Meet Staff & Admin</h3>
+          <p>See our active staff members and server management.</p>
+        </div>
+
+        <div class="action-card" onclick="showPage('apply')">
+          <h3>📋 Staff Application</h3>
+          <p>Apply to join our moderation and server staff team.</p>
+        </div>
+
+        <div class="action-card" onclick="showPage('media')">
+          <h3>🎥 Media Application</h3>
+          <p>Apply for content creator, YouTube, or Twitch roles.</p>
+        </div>
+
+        <div class="action-card" onclick="showPage('appeal')">
+          <h3>⚖️ Ban Appeal</h3>
+          <p>Banned or punished? Submit an appeal for review by staff.</p>
+        </div>
+
+        <div class="action-card" onclick="showPage('bugs')">
+          <h3>🐛 Report Bugs</h3>
+          <p>Found a glitch or broken plugin? Let us know here so we can fix it.</p>
+        </div>
+
+        <div class="action-card" onclick="showPage('suggest')">
+          <h3>💡 Suggestions</h3>
+          <p>Have an idea for a feature, plugin, or event? Suggest it to us!</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- STAFF / TEAM PAGE -->
+    <div id="staff" class="page">
+      <h2>PieSMP Staff Roster</h2>
+      <p>Meet the team members keeping PieSMP safe, active, and running smoothly!</p>
+
+      <div class="staff-grid">
+        <div class="staff-card">
+          <img src="https://mc-heads.net/avatar/swashbuckle007/64" alt="swashbuckle007 Head" class="staff-avatar">
+          <h3>swashbuckle007</h3>
+          <span class="role-badge badge-owner">OWNER</span>
+        </div>
+        <div class="staff-card">
+          <img src="https://mc-heads.net/avatar/D35_4/64" alt="D35_4 Head" class="staff-avatar">
+          <h3>D35_4</h3>
+          <span class="role-badge badge-dev">DEV</span>
+        </div>
+        <div class="staff-card">
+          <h3>Open Position</h3>
+          <span class="role-badge badge-sradmin">SR ADMIN</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- STAFF APPLICATION PAGE -->
+    <div id="apply" class="page">
+      <h2>Staff Application</h2>
+      <p>Submit your application below to apply for a staff position on PieSMP.</p>
+
+      <form onsubmit="handleFormSubmit(event, 'Staff Application')">
+        <div class="form-group">
+          <label>Minecraft Username (IGN)</label>
+          <input type="text" name="ign" required placeholder="e.g. Steve">
+        </div>
+        <div class="form-group">
+          <label>Discord Tag <span class="optional-tag">(Optional)</span></label>
+          <input type="text" name="discord" placeholder="e.g. user#0000">
+        </div>
+        <div class="form-group">
+          <label>Staff Position Applying For</label>
+          <select name="role" required>
+            <option value="" disabled selected>Select a staff role...</option>
+            <option value="Helper">Helper</option>
+            <option value="Mod">Mod</option>
+            <option value="Admin">Admin</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Why should we accept your staff application?</label>
+          <textarea name="details" required placeholder="Tell us about your experience and why you want to help PieSMP..."></textarea>
+        </div>
+        <button type="submit" class="submit-btn">Submit Application</button>
+      </form>
+    </div>
+
+    <!-- MEDIA APPLICATION PAGE -->
+    <div id="media" class="page">
+      <h2>🎥 Media Application</h2>
+      <p>Are you a content creator? Apply for the Media rank to gain special perks and promote your content on PieSMP!</p>
+
+      <form onsubmit="handleFormSubmit(event, 'Media Application')">
+        <div class="form-group">
+          <label>Minecraft Username (IGN)</label>
+          <input type="text" name="ign" required placeholder="e.g. Steve">
+        </div>
+        <div class="form-group">
+          <label>Discord Tag <span class="optional-tag">(Optional)</span></label>
+          <input type="text" name="discord" placeholder="e.g. user#0000">
+        </div>
+        <div class="form-group">
+          <label>Primary Content Platform</label>
+          <select name="platform" required>
+            <option value="" disabled selected>Select your platform...</option>
+            <option value="YouTube">YouTube</option>
+            <option value="Twitch">Twitch</option>
+            <option value="TikTok">TikTok / Shorts</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Channel / Profile Link</label>
+          <input type="url" name="link" required placeholder="https://youtube.com/@yourchannel">
+        </div>
+        <div class="form-group">
+          <label>Subscriber / Follower Count & Average Views</label>
+          <input type="text" name="stats" required placeholder="e.g. 1,200 subscribers, ~300 views per video">
+        </div>
+        <div class="form-group">
+          <label>What content do you plan to create on PieSMP?</label>
+          <textarea name="details" required placeholder="Let us know what kind of videos, streams, or shorts you plan to make on the server..."></textarea>
+        </div>
+        <button type="submit" class="submit-btn">Submit Media Application</button>
+      </form>
+    </div>
+
+    <!-- BAN APPEAL PAGE -->
+    <div id="appeal" class="page">
+      <h2>⚖️ Ban Appeal</h2>
+      <p>If you were banned or muted on PieSMP and believe it was a mistake or you deserve a second chance, please submit an appeal below.</p>
+
+      <form onsubmit="handleFormSubmit(event, 'Ban Appeal')">
+        <div class="form-group">
+          <label>Minecraft Username (IGN)</label>
+          <input type="text" name="ign" required placeholder="e.g. Steve">
+        </div>
+        <div class="form-group">
+          <label>Discord Tag <span class="optional-tag">(Optional)</span></label>
+          <input type="text" name="discord" placeholder="e.g. user#0000">
+        </div>
+        <div class="form-group">
+          <label>Type of Punishment</label>
+          <select name="punishment" required>
+            <option value="" disabled selected>Select punishment type...</option>
+            <option value="Permanent Ban">Permanent Ban</option>
+            <option value="Temporary Ban">Temporary Ban</option>
+            <option value="Mute">Mute</option>
+            <option value="Other">Other Penalty</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Reason Given for Punishment</label>
+          <input type="text" name="reason" required placeholder="e.g. X-Ray, Griefing, Spamming">
+        </div>
+        <div class="form-group">
+          <label>Why should this punishment be lifted or reduced?</label>
+          <textarea name="details" required placeholder="Explain what happened and why you should be unbanned or unmuted..."></textarea>
+        </div>
+        <button type="submit" class="submit-btn">Submit Appeal</button>
+      </form>
+    </div>
+
+    <!-- REPORT BUGS PAGE -->
+    <div id="bugs" class="page">
+      <h2>🐛 Report a Bug</h2>
+      <p>Please provide details on any bugs or broken features you'found on PieSMP.</p>
+
+      <form onsubmit="handleFormSubmit(event, 'Bug Report')">
+        <div class="form-group">
+          <label>Minecraft Username (IGN)</label>
+          <input type="text" name="ign" required placeholder="e.g. Steve">
+        </div>
+        <div class="form-group">
+          <label>Bug Title / Summary</label>
+          <input type="text" name="summary" required placeholder="e.g. Shop plugin not giving items on buy">
+        </div>
+        <div class="form-group">
+          <label>How to Reproduce the Bug</label>
+          <textarea name="details" required placeholder="List the steps to recreate this glitch..."></textarea>
+        </div>
+        <button type="submit" class="submit-btn">Submit Bug Report</button>
+      </form>
+    </div>
+
+    <!-- SUGGESTIONS PAGE -->
+    <div id="suggest" class="page">
+      <h2>💡 Suggest Anything</h2>
+      <p>Have an idea to make PieSMP better? Share your ideas with the management team!</p>
+
+      <form onsubmit="handleFormSubmit(event, 'Suggestion')">
+        <div class="form-group">
+          <label>Minecraft Username (IGN)</label>
+          <input type="text" name="ign" required placeholder="e.g. Steve">
+        </div>
+        <div class="form-group">
+          <label>Suggestion Type</label>
+          <select name="type" required>
+            <option value="Feature">New Feature / Plugin</option>
+            <option value="Economy">Economy / Shop Balance</option>
+            <option value="Event">Community Event Idea</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Describe your suggestion</label>
+          <textarea name="details" required placeholder="Explain your idea in detail..."></textarea>
+        </div>
+        <button type="submit" class="submit-btn">Submit Suggestion</button>
+      </form>
+    </div>
+
+    <!-- ADMIN PANEL PAGE -->
+    <div id="admin" class="page">
+      <div class="admin-controls">
+        <h2>🛠️ Admin Dashboard</h2>
+        <button class="nav-btn" onclick="clearAllSubmissions()" style="border-color: var(--danger); color: var(--danger);">Clear All Submissions</button>
+      </div>
+      <p>Review active session applications, appeals, bug reports, and suggestions below.</p>
+      
+      <div id="admin-submissions-list">
+        <!-- Submissions Render Here -->
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // Configuration Settings
+    const ADMIN_PASSWORD = "pieadmin123";
+    let isAdminAuthenticated = false;
+
+    // In-memory array replacing localStorage
+    let submissions = [];
+
+    function showPage(pageId) {
+      document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+
+      document.getElementById(pageId).classList.add('active');
+      const activeNavBtn = document.getElementById('btn-' + pageId);
+      if (activeNavBtn) activeNavBtn.classList.add('active');
+      
+      if (pageId === 'admin') {
+        renderAdminSubmissions();
+      }
+    }
+
+    /* Admin Password Logic */
+    function openAdminGate() {
+      if (isAdminAuthenticated) {
+        showPage('admin');
+      } else {
+        document.getElementById('admin-modal').classList.add('active');
+      }
+    }
+
+    function closeAdminGate() {
+      document.getElementById('admin-modal').classList.remove('active');
+      document.getElementById('admin-pass-input').value = '';
+    }
+
+    function verifyAdminPassword() {
+      const inputPass = document.getElementById('admin-pass-input').value;
+      if (inputPass === ADMIN_PASSWORD) {
+        isAdminAuthenticated = true;
+        closeAdminGate();
+        showPage('admin');
+      } else {
+        alert("Incorrect Admin Password!");
+      }
+    }
+
+    /* Handling Submissions with In-Memory Array */
+    function handleFormSubmit(event, type) {
+      event.preventDefault();
+      const formData = new FormData(event.target);
+      const submission = {
+        id: Date.now(),
+        type: type,
+        date: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString(),
+        status: 'Pending',
+        data: {}
+      };
+
+      formData.forEach((value, key) => {
+        submission.data[key] = value;
+      });
+
+      // Push to runtime memory array
+      submissions.unshift(submission);
+
+      alert(`${type} submitted successfully! Thanks for helping improve PieSMP.`);
+      event.target.reset();
+    }
+
+    function renderAdminSubmissions() {
+      const container = document.getElementById('admin-submissions-list');
+
+      if (submissions.length === 0) {
+        container.innerHTML = '<p>No active applications or reports found in memory.</p>';
+        return;
+      }
+
+      container.innerHTML = submissions.map(sub => {
+        let detailsHtml = '';
+        for (const [key, value] of Object.entries(sub.data)) {
+          detailsHtml += `<div><strong>${key.toUpperCase()}:</strong> ${value}</div>`;
+        }
+
+        let statusColor = '#ff9f1c';
+        if (sub.status === 'Approved') statusColor = 'var(--success)';
+        if (sub.status === 'Rejected') statusColor = 'var(--danger)';
+
+        return `
+          <div class="app-card">
+            <div class="app-header">
+              <span class="app-type">${sub.type}</span>
+              <span class="status-tag" style="color: ${statusColor}">${sub.status}</span>
+              <span style="font-size: 0.8rem; color: var(--text-muted);">${sub.date}</span>
+            </div>
+            <div class="app-body">
+              ${detailsHtml}
+            </div>
+            <div class="app-actions">
+              <button class="btn-approve" onclick="updateStatus(${sub.id}, 'Approved')">Approve</button>
+              <button class="btn-reject" onclick="updateStatus(${sub.id}, 'Rejected')">Reject</button>
+              <button class="nav-btn" onclick="deleteSubmission(${sub.id})" style="margin-left: auto;">Delete</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function updateStatus(id, newStatus) {
+      submissions = submissions.map(sub => {
+        if (sub.id === id) sub.status = newStatus;
+        return sub;
+      });
+      renderAdminSubmissions();
+    }
+
+    function deleteSubmission(id) {
+      submissions = submissions.filter(sub => sub.id !== id);
+      renderAdminSubmissions();
+    }
+
+    function clearAllSubmissions() {
+      if (confirm('Are you sure you want to clear all active submissions?')) {
+        submissions = [];
+        renderAdminSubmissions();
+      }
+    }
+  </script>
+</body>
+</html>
