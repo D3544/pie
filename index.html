@@ -31,49 +31,23 @@
       align-items: center;
     }
 
+    header {
+      width: 100%;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: center;
+      padding: 15px 20px;
+    }
+
     nav {
       width: 100%;
-      max-width: 1100px;
+      max-width: 1200px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 20px;
-      border-bottom: 1px solid var(--border);
     }
 
-    /* Horizontal Landscape Navigation for Items */
-    .nav-links {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-      flex-direction: row; /* Landscape alignment */
-      overflow-x: auto;
-      padding-bottom: 4px;
-    }
-
-    .nav-btn {
-      background: transparent;
-      border: 1px solid transparent;
-      color: var(--text-muted);
-      padding: 8px 12px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: 600;
-      transition: all 0.2s;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.9rem;
-      white-space: nowrap;
-    }
-
-    .nav-btn:hover, .nav-btn.active {
-      color: var(--accent);
-      border-color: var(--accent);
-      background: rgba(255, 159, 28, 0.05);
-    }
-
-    /* PieSMP Logo placed explicitly on the Right Header */
+    /* Logo Section (Left Side) */
     .logo {
       font-size: 1.4rem;
       font-weight: bold;
@@ -82,12 +56,43 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      margin-left: 20px;
       white-space: nowrap;
     }
 
+    /* Nav Links (Centered / Flex Wrap, No Scrollbar) */
+    .nav-links {
+      display: flex;
+      gap: 12px 18px;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap; /* Allows wrap without forcing horizontal scroll */
+      overflow: visible;
+    }
+
+    .nav-btn {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-muted);
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      white-space: nowrap;
+    }
+
+    .nav-btn:hover, .nav-btn.active {
+      color: #ffffff;
+      border-color: var(--accent);
+      background: rgba(255, 159, 28, 0.05);
+    }
+
     .container {
-      max-width: 850px;
+      max-width: 900px;
       width: 90%;
       margin: 40px auto;
     }
@@ -97,51 +102,83 @@
       background: var(--card-bg);
       border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 32px;
+      padding: 36px;
       box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     }
 
     .page.active { display: block; }
 
-    h1, h2 { color: var(--accent); margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
-    p { color: var(--text-muted); line-height: 1.6; margin-bottom: 20px; }
-
-    /* Action Cards organized in a Landscape Layout */
-    .btn-grid {
+    .page-header {
       display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
-      gap: 15px;
-      margin-top: 25px;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    h1, h2 { 
+      color: var(--accent); 
+      font-size: 1.8rem;
+    }
+
+    p.subtitle { 
+      color: var(--text-muted); 
+      line-height: 1.6; 
+      margin-bottom: 28px; 
+      font-size: 0.95rem;
+    }
+
+    /* 3-Column Grid Matching Prompt Image Structure */
+    .btn-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    @media (max-width: 768px) {
+      .btn-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .btn-grid {
+        grid-template-columns: 1fr;
+      }
     }
 
     .action-card {
-      flex: 1 1 calc(50% - 15px);
-      min-width: 260px;
       background: #0d0d14;
       border: 1px solid var(--border);
-      padding: 20px;
+      padding: 24px 16px;
       border-radius: 8px;
       cursor: pointer;
       text-align: center;
-      transition: border-color 0.2s, transform 0.1s;
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
     .action-card:hover {
       border-color: var(--accent);
       transform: translateY(-2px);
+      background: #11111a;
     }
 
     .action-card h3 { 
       color: #fff; 
+      margin-top: 10px;
       margin-bottom: 8px; 
-      display: flex; 
-      align-items: center; 
-      justify-content: center; 
-      gap: 8px;
+      font-size: 1rem;
     }
 
-    /* Pixelated Minecraft Icons */
+    .action-card p {
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      line-height: 1.4;
+    }
+
+    /* Minecraft Assets Rendering */
     .mc-item {
       image-rendering: pixelated;
       image-rendering: crisp-edges;
@@ -150,10 +187,11 @@
       flex-shrink: 0;
     }
 
-    .mc-item.nav-icon { width: 20px; height: 20px; }
-    .mc-item.card-icon { width: 24px; height: 24px; }
-    .mc-item.header-icon { width: 32px; height: 32px; }
+    .mc-item.nav-icon { width: 18px; height: 18px; }
+    .mc-item.card-icon { width: 28px; height: 28px; }
+    .mc-item.header-icon { width: 34px; height: 34px; }
 
+    /* Form Design */
     .form-group { margin-bottom: 18px; }
     label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 0.9rem; }
     .optional-tag { color: var(--text-muted); font-weight: normal; font-size: 0.8rem; }
@@ -187,15 +225,14 @@
     }
     .submit-btn:hover { background: var(--accent-hover); }
 
+    /* Staff Cards */
     .staff-grid {
-      display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
-      gap: 15px;
-      margin-top: 15px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
     }
+
     .staff-card {
-      flex: 1 1 180px;
       background: #0d0d14;
       border: 1px solid var(--border);
       padding: 20px 15px;
@@ -215,7 +252,7 @@
       background: #111118;
     }
     .staff-card h3 {
-      font-size: 1.1rem;
+      font-size: 1rem;
       margin-bottom: 4px;
       color: #fff;
     }
@@ -234,121 +271,113 @@
 </head>
 <body>
 
-  <nav>
-    <!-- Left Side Nav Buttons (Landscape Row Layout) -->
-    <div class="nav-links">
-      <button class="nav-btn active" id="btn-home" onclick="showPage('home')">
-        <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/block/grass_block_side.png" alt="Grass" class="mc-item nav-icon">
-        Home
-      </button>
+  <header>
+    <nav>
+      <!-- Logo on the Left Side -->
+      <div class="logo" onclick="showPage('home')">
+        <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/pumpkin_pie.png" alt="Pie" class="mc-item nav-icon">
+        PieSMP
+      </div>
 
-      <button class="nav-btn" id="btn-bugs" onclick="showPage('bugs')">
-        <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/barrier.png" alt="Bug" class="mc-item nav-icon">
-        Report Bug
-      </button>
+      <!-- Navigation Links on the Right -->
+      <div class="nav-links">
+        <button class="nav-btn active" id="btn-home" onclick="showPage('home')">
+          <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/block/grass_block_side.png" alt="Grass" class="mc-item nav-icon">
+          Home
+        </button>
 
-      <button class="nav-btn" id="btn-suggest" onclick="showPage('suggest')">
-        <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/writable_book.png" alt="Suggest" class="mc-item nav-icon">
-        Suggest
-      </button>
+        <button class="nav-btn" id="btn-staff" onclick="showPage('staff')">
+          <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/diamond_sword.png" alt="Staff" class="mc-item nav-icon">
+          Our Team
+        </button>
 
-      <button class="nav-btn" id="btn-staff" onclick="showPage('staff')">
-        <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/diamond_sword.png" alt="Staff" class="mc-item nav-icon">
-        Our Team
-      </button>
+        <button class="nav-btn" id="btn-apply" onclick="showPage('apply')">
+          <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/writable_book.png" alt="Apply" class="mc-item nav-icon">
+          Apply Staff
+        </button>
 
-      <button class="nav-btn" id="btn-apply" onclick="showPage('apply')">
-        <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/writable_book.png" alt="Apply" class="mc-item nav-icon">
-        Apply Staff
-      </button>
+        <button class="nav-btn" id="btn-media" onclick="showPage('media')">
+          <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/repeater.png" alt="Media" class="mc-item nav-icon">
+          Apply Media
+        </button>
 
-      <button class="nav-btn" id="btn-media" onclick="showPage('media')">
-        <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/repeater.png" alt="Media" class="mc-item nav-icon">
-        Apply Media
-      </button>
+        <button class="nav-btn" id="btn-appeal" onclick="showPage('appeal')">
+          <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/diamond_axe.png" alt="Ban Appeal" class="mc-item nav-icon">
+          Ban Appeal
+        </button>
 
-      <button class="nav-btn" id="btn-appeal" onclick="showPage('appeal')">
-        <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/diamond_axe.png" alt="Ban Appeal" class="mc-item nav-icon">
-        Ban Appeal
-      </button>
-    </div>
+        <button class="nav-btn" id="btn-bugs" onclick="showPage('bugs')">
+          <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/barrier.png" alt="Bug" class="mc-item nav-icon">
+          Report Bug
+        </button>
 
-    <!-- Right Side Logo (PieSMP + Pumpkin Pie Header Icon) -->
-    <div class="logo" onclick="showPage('home')">
-      PieSMP
-      <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/pumpkin_pie.png" alt="Pie" class="mc-item header-icon">
-    </div>
-  </nav>
+        <button class="nav-btn" id="btn-suggest" onclick="showPage('suggest')">
+          <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/writable_book.png" alt="Suggest" class="mc-item nav-icon">
+          Suggest
+        </button>
+      </div>
+    </nav>
+  </header>
 
   <div class="container">
 
+    <!-- HOME PAGE -->
     <div id="home" class="page active">
-      <h1>
-        <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/block/grass_block_side.png" alt="Grass" class="mc-item header-icon">
-        Welcome to PieSMP
-      </h1>
-      <p>PieSMP is a Minecraft Survival SMP built for community, economy, and content creation. Select an option below to apply, submit an appeal, report an issue, or leave a suggestion!</p>
+      <div class="page-header">
+        <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/pumpkin_pie.png" alt="Pie" class="mc-item header-icon">
+        <h1>Welcome to PieSMP</h1>
+      </div>
+      <p class="subtitle">PieSMP is a Minecraft Survival SMP built for community, economy, and content creation. Select an option below to apply, submit an appeal, report an issue, or leave a suggestion!</p>
       
-      <!-- Horizontal / Landscape Block Cards Layout -->
+      <!-- 3x2 Grid layout strictly matching provided image -->
       <div class="btn-grid">
 
-        <div class="action-card" onclick="showPage('bugs')">
-          <h3>
-            <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/barrier.png" alt="Bug" class="mc-item card-icon">
-            Report Bugs
-          </h3>
-          <p>Found a glitch or broken plugin? Let us know here.</p>
-        </div>
-
-        <div class="action-card" onclick="showPage('suggest')">
-          <h3>
-            <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/writable_book.png" alt="Suggest" class="mc-item card-icon">
-            Suggestions
-          </h3>
-          <p>Have an idea for a feature or event? Suggest it!</p>
-        </div>
-
         <div class="action-card" onclick="showPage('staff')">
-          <h3>
-            <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/diamond_sword.png" alt="Staff" class="mc-item card-icon">
-            Meet Staff
-          </h3>
+          <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/diamond_sword.png" alt="Staff" class="mc-item card-icon">
+          <h3>Meet Staff</h3>
           <p>See our active staff members and server management.</p>
         </div>
 
         <div class="action-card" onclick="showPage('apply')">
-          <h3>
-            <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/writable_book.png" alt="Apply" class="mc-item card-icon">
-            Staff App
-          </h3>
+          <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/writable_book.png" alt="Apply" class="mc-item card-icon">
+          <h3>Staff App</h3>
           <p>Apply to join our moderation and server staff team.</p>
         </div>
 
         <div class="action-card" onclick="showPage('media')">
-          <h3>
-            <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/repeater.png" alt="Media" class="mc-item card-icon">
-            Media App
-          </h3>
+          <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/repeater.png" alt="Media" class="mc-item card-icon">
+          <h3>Media App</h3>
           <p>Apply for content creator, YouTube, or Twitch roles.</p>
         </div>
 
         <div class="action-card" onclick="showPage('appeal')">
-          <h3>
-            <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/diamond_axe.png" alt="Ban Appeal" class="mc-item card-icon">
-            Ban Appeal
-          </h3>
+          <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/diamond_axe.png" alt="Ban Appeal" class="mc-item card-icon">
+          <h3>Ban Appeal</h3>
           <p>Banned or punished? Submit an appeal for review by staff.</p>
+        </div>
+
+        <div class="action-card" onclick="showPage('bugs')">
+          <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/barrier.png" alt="Bug" class="mc-item card-icon">
+          <h3>Report Bugs</h3>
+          <p>Found a glitch or broken plugin? Let us know here.</p>
+        </div>
+
+        <div class="action-card" onclick="showPage('suggest')">
+          <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/writable_book.png" alt="Suggest" class="mc-item card-icon">
+          <h3>Suggestions</h3>
+          <p>Have an idea for a feature or event? Suggest it!</p>
         </div>
 
       </div>
     </div>
 
+    <!-- STAFF PAGE -->
     <div id="staff" class="page">
-      <h2>
+      <div class="page-header">
         <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/diamond_sword.png" alt="Staff" class="mc-item header-icon">
-        PieSMP Staff Roster
-      </h2>
-      <p>Meet the team members keeping PieSMP safe, active, and running smoothly!</p>
+        <h2>PieSMP Staff Roster</h2>
+      </div>
+      <p class="subtitle">Meet the team members keeping PieSMP safe, active, and running smoothly!</p>
 
       <div class="staff-grid">
         <div class="staff-card">
@@ -369,12 +398,13 @@
       </div>
     </div>
 
+    <!-- APPLY STAFF PAGE -->
     <div id="apply" class="page">
-      <h2>
+      <div class="page-header">
         <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/writable_book.png" alt="Apply" class="mc-item header-icon">
-        Staff Application
-      </h2>
-      <p>Submit your application below to apply for a staff position on PieSMP.</p>
+        <h2>Staff Application</h2>
+      </div>
+      <p class="subtitle">Submit your application below to apply for a staff position on PieSMP.</p>
 
       <form onsubmit="handleFormSubmit(event, 'Staff Application')">
         <div class="form-group">
@@ -402,12 +432,13 @@
       </form>
     </div>
 
+    <!-- MEDIA PAGE -->
     <div id="media" class="page">
-      <h2>
+      <div class="page-header">
         <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/repeater.png" alt="Media" class="mc-item header-icon">
-        Media Application
-      </h2>
-      <p>Are you a content creator? Apply for the Media rank to gain special perks and promote your content on PieSMP!</p>
+        <h2>Media Application</h2>
+      </div>
+      <p class="subtitle">Are you a content creator? Apply for the Media rank to gain special perks and promote your content on PieSMP!</p>
 
       <form onsubmit="handleFormSubmit(event, 'Media Application')">
         <div class="form-group">
@@ -444,12 +475,13 @@
       </form>
     </div>
 
+    <!-- BAN APPEAL PAGE -->
     <div id="appeal" class="page">
-      <h2>
+      <div class="page-header">
         <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/diamond_axe.png" alt="Ban Appeal" class="mc-item header-icon">
-        Ban Appeal
-      </h2>
-      <p>If you were banned or muted on PieSMP and believe it was a mistake or you deserve a second chance, please submit an appeal below.</p>
+        <h2>Ban Appeal</h2>
+      </div>
+      <p class="subtitle">If you were banned or muted on PieSMP and believe it was a mistake or you deserve a second chance, please submit an appeal below.</p>
 
       <form onsubmit="handleFormSubmit(event, 'Ban Appeal')">
         <div class="form-group">
@@ -482,12 +514,13 @@
       </form>
     </div>
 
+    <!-- BUG REPORT PAGE -->
     <div id="bugs" class="page">
-      <h2>
+      <div class="page-header">
         <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/barrier.png" alt="Bug" class="mc-item header-icon">
-        Report a Bug
-      </h2>
-      <p>Please provide details on any bugs or broken features you've found on PieSMP.</p>
+        <h2>Report a Bug</h2>
+      </div>
+      <p class="subtitle">Please provide details on any bugs or broken features you've found on PieSMP.</p>
 
       <form onsubmit="handleFormSubmit(event, 'Bug Report')">
         <div class="form-group">
@@ -513,12 +546,13 @@
       </form>
     </div>
 
+    <!-- SUGGESTIONS PAGE -->
     <div id="suggest" class="page">
-      <h2>
+      <div class="page-header">
         <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/writable_book.png" alt="Suggest" class="mc-item header-icon">
-        Suggest Anything
-      </h2>
-      <p>Have an idea to make PieSMP better? Share your ideas with the management team!</p>
+        <h2>Suggest Anything</h2>
+      </div>
+      <p class="subtitle">Have an idea to make PieSMP better? Share your ideas with the management team!</p>
 
       <form onsubmit="handleFormSubmit(event, 'Suggestion')">
         <div class="form-group">
