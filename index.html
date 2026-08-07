@@ -290,6 +290,11 @@
           Home
         </button>
 
+        <button class="nav-btn" id="btn-rules" onclick="showPage('rules')">
+          <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/book.png" alt="Rules" class="mc-item nav-icon">
+          Rules
+        </button>
+
         <button class="nav-btn" id="btn-staff" onclick="showPage('staff')">
           <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/diamond_sword.png" alt="Staff" class="mc-item nav-icon">
           Our Team
@@ -336,6 +341,12 @@
       
       <div class="btn-grid">
 
+        <div class="action-card" onclick="showPage('rules')">
+          <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/book.png" alt="Rules" class="mc-item card-icon">
+          <h3>Server Rules</h3>
+          <p>Read our official community and gameplay guidelines.</p>
+        </div>
+
         <div class="action-card" onclick="showPage('staff')">
           <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/diamond_sword.png" alt="Staff" class="mc-item card-icon">
           <h3>Our Team</h3>
@@ -380,13 +391,44 @@
           <p>Purchase ranks, keys, and special perks in our store.</p>
         </a>
 
-        <!-- Report a Player Action Card (Beside Shop, Bone Item) -->
+        <!-- Report a Player Action Card (Bone Item) -->
         <div class="action-card" onclick="showPage('reportplayer')">
           <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/bone.png" alt="Report Player" class="mc-item card-icon">
           <h3>Report a Player</h3>
           <p>Report rule breakers, griefers, or exploiters to staff.</p>
         </div>
 
+      </div>
+    </div>
+
+    <!-- RULES PAGE -->
+    <div id="rules" class="page">
+      <div class="page-header">
+        <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/book.png" alt="Rules" class="mc-item header-icon">
+        <h2>Server Rules</h2>
+      </div>
+      <p class="subtitle">Please follow these guidelines to ensure a fair, friendly, and fun environment for everyone on PieSMP.</p>
+
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+        <div style="background: #0d0d14; border: 1px solid var(--border); padding: 20px; border-radius: 8px;">
+          <h3 style="color: #fff; margin-bottom: 6px; font-size: 1.05rem;">1. Respect & Chat Etiquette</h3>
+          <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.5;">No harassment, hate speech, bullying, or excessive toxicity in public chat or DMs. Keep language appropriate for all players.</p>
+        </div>
+
+        <div style="background: #0d0d14; border: 1px solid var(--border); padding: 20px; border-radius: 8px;">
+          <h3 style="color: #fff; margin-bottom: 6px; font-size: 1.05rem;">2. No Griefing or Stealing</h3>
+          <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.5;">Griefing unclaimed land, stealing from player chests, or destroying community structures is strictly prohibited and punishable.</p>
+        </div>
+
+        <div style="background: #0d0d14; border: 1px solid var(--border); padding: 20px; border-radius: 8px;">
+          <h3 style="color: #fff; margin-bottom: 6px; font-size: 1.05rem;">3. No Cheating or Exploits</h3>
+          <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.5;">Using hacked clients, X-ray texture packs/mods, item duplication glitches, or unauthorized unfair advantages will result in a permanent ban.</p>
+        </div>
+
+        <div style="background: #0d0d14; border: 1px solid var(--border); padding: 20px; border-radius: 8px;">
+          <h3 style="color: #fff; margin-bottom: 6px; font-size: 1.05rem;">4. Alternate Accounts & Ban Evading</h3>
+          <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.5;">Using alternative accounts to bypass active punishments, economy limits, or restrictions is not allowed.</p>
+        </div>
       </div>
     </div>
 
