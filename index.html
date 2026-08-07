@@ -192,42 +192,6 @@
     .mc-item.card-icon { width: 28px; height: 28px; }
     .mc-item.header-icon { width: 34px; height: 34px; }
 
-    /* --- Enchantment Glint (Shimmer Effect) --- */
-    .enchanted-glint {
-      position: relative;
-      overflow: hidden;
-      display: inline-block;
-    }
-
-    .enchanted-glint::after {
-      content: "";
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: linear-gradient(
-        135deg,
-        rgba(255, 255, 255, 0) 0%,
-        rgba(255, 255, 255, 0) 40%,
-        rgba(128, 0, 128, 0.4) 50%,
-        rgba(255, 255, 255, 0) 60%,
-        rgba(255, 255, 255, 0) 100%
-      );
-      animation: enchantment-shimmer 3s infinite linear;
-      transform: rotate(0deg);
-      pointer-events: none;
-    }
-
-    @keyframes enchantment-shimmer {
-      0% {
-        transform: translate(-30%, -30%);
-      }
-      100% {
-        transform: translate(10%, 10%);
-      }
-    }
-
     /* Form Design */
     .form-group { margin-bottom: 18px; }
     label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 0.9rem; }
@@ -328,7 +292,7 @@
           Our Team
         </button>
 
-        <button class="nav-btn enchanted-glint" id="btn-apply" onclick="showPage('apply')">
+        <button class="nav-btn" id="btn-apply" onclick="showPage('apply')">
           <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/enchanted_book.png" alt="Apply" class="mc-item nav-icon">
           Apply Staff
         </button>
@@ -338,7 +302,7 @@
           Apply Media
         </button>
 
-        <!-- Ban Appeal Nav Button (Using direct raw GitHub URL for the mace texture to ensure cache-busting/loading) -->
+        <!-- Ban Appeal Nav Button -->
         <button class="nav-btn" id="btn-appeal" onclick="showPage('appeal')">
           <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.21/assets/minecraft/textures/item/mace.png" alt="Ban Appeal" class="mc-item nav-icon">
           Ban Appeal
@@ -375,7 +339,7 @@
           <p>See our active staff members and server management.</p>
         </div>
 
-        <div class="action-card enchanted-glint" onclick="showPage('apply')">
+        <div class="action-card" onclick="showPage('apply')">
           <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/enchanted_book.png" alt="Apply" class="mc-item card-icon">
           <h3>Staff App</h3>
           <p>Apply to join our moderation and server staff team.</p>
@@ -439,7 +403,7 @@
     <!-- APPLY STAFF PAGE -->
     <div id="apply" class="page">
       <div class="page-header">
-        <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/enchanted_book.png" alt="Apply" class="mc-item header-icon enchanted-glint">
+        <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/enchanted_book.png" alt="Apply" class="mc-item header-icon">
         <h2>Staff Application</h2>
       </div>
       <p class="subtitle">Submit your application below to apply for a staff position on PieSMP.</p>
