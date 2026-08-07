@@ -373,12 +373,19 @@
           <p>Have an idea for a feature or event? Suggest it!</p>
         </div>
 
-        <!-- Shop Action Card (Moved to Bottom) -->
+        <!-- Shop Action Card (At the bottom) -->
         <a href="https://shop.piesmp.ca" target="_blank" class="action-card">
           <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/emerald.png" alt="Shop" class="mc-item card-icon">
           <h3>Server Shop</h3>
           <p>Purchase ranks, keys, and special perks in our store.</p>
         </a>
+
+        <!-- Report a Player Action Card (Beside Shop, Skeleton Skull) -->
+        <div class="action-card" onclick="showPage('reportplayer')">
+          <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/skeleton_skull.png" alt="Report Player" class="mc-item card-icon">
+          <h3>Report a Player</h3>
+          <p>Report rule breakers, griefers, or exploiters to staff.</p>
+        </div>
 
       </div>
     </div>
@@ -558,6 +565,49 @@
       </form>
     </div>
 
+    <!-- REPORT A PLAYER PAGE -->
+    <div id="reportplayer" class="page">
+      <div class="page-header">
+        <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/skeleton_skull.png" alt="Report Player" class="mc-item header-icon">
+        <h2>Report a Player</h2>
+      </div>
+      <p class="subtitle">Submit a report regarding a player breaking rules on PieSMP.</p>
+
+      <form onsubmit="handleFormSubmit(event, 'Player Report')">
+        <div class="form-group">
+          <label>Your Minecraft Username (IGN)</label>
+          <input type="text" name="ign" required placeholder="e.g. Steve">
+        </div>
+        <div class="form-group">
+          <label>Offending Player's Username</label>
+          <input type="text" name="target_ign" required placeholder="e.g. GriefMaster99">
+        </div>
+        <div class="form-group">
+          <label>Violation Type</label>
+          <select name="violation" required>
+            <option value="" disabled selected>Select violation type...</option>
+            <option value="Hacking / Cheating">Hacking / Cheating (X-Ray, Kill Aura, etc.)</option>
+            <option value="Griefing / Stealing">Griefing / Stealing</option>
+            <option value="Chat Toxicity / Harassment">Chat Toxicity / Harassment</option>
+            <option value="Exploiting">Exploiting Glitches</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Description of Incident & Details</label>
+          <textarea name="details" required placeholder="Provide details, coordinates, or context about what happened..."></textarea>
+        </div>
+        <div class="form-group">
+          <label>Attach Evidence (Screenshot/Video) <span class="optional-tag">(Optional)</span></label>
+          <input type="file" name="image" accept="image/*" onchange="previewImage(event, 'report-img-preview')">
+          <div id="report-img-preview" class="img-preview-container">
+            <img src="" alt="Preview" class="img-preview">
+          </div>
+        </div>
+        <button type="submit" class="submit-btn">Submit Player Report</button>
+      </form>
+    </div>
+
     <!-- SUGGESTIONS PAGE -->
     <div id="suggest" class="page">
       <div class="page-header">
@@ -662,6 +712,19 @@
             { name: "Minecraft IGN", value: submission.data.ign || "Unknown", inline: true },
             { name: "Summary", value: submission.data.summary || "No summary provided", inline: true },
             { name: "How to Reproduce", value: submission.data.details || "No details provided" }
+          ],
+          footer: { text: `Submitted at ${submission.date}` }
+        };
+      } else if (type === 'Player Report' && BUGS_WEBHOOK_URL !== "") {
+        targetWebhook = BUGS_WEBHOOK_URL;
+        embedPayload = {
+          title: "💀 New Player Report",
+          color: 11184810,
+          fields: [
+            { name: "Reporter IGN", value: submission.data.ign || "Unknown", inline: true },
+            { name: "Reported Player", value: submission.data.target_ign || "Unknown", inline: true },
+            { name: "Violation Type", value: submission.data.violation || "Not specified", inline: true },
+            { name: "Description", value: submission.data.details || "No details provided" }
           ],
           footer: { text: `Submitted at ${submission.date}` }
         };
