@@ -33,7 +33,7 @@
 
     nav {
       width: 100%;
-      max-width: 1050px;
+      max-width: 1100px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -53,22 +53,24 @@
 
     .nav-links {
       display: flex;
-      gap: 8px;
+      gap: 6px;
       flex-wrap: wrap;
+      align-items: center;
     }
 
     .nav-btn {
       background: transparent;
       border: 1px solid transparent;
       color: var(--text-muted);
-      padding: 8px 12px;
+      padding: 8px 10px;
       border-radius: 6px;
       cursor: pointer;
       font-weight: 600;
       transition: all 0.2s;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
+      font-size: 0.9rem;
     }
 
     .nav-btn:hover, .nav-btn.active {
@@ -78,7 +80,7 @@
     }
 
     .container {
-      max-width: 800px;
+      max-width: 850px;
       width: 90%;
       margin: 40px auto;
     }
@@ -99,9 +101,13 @@
 
     .btn-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      grid-template-columns: repeat(2, 1fr);
       gap: 15px;
       margin-top: 25px;
+    }
+
+    @media (max-width: 600px) {
+      .btn-grid { grid-template-columns: 1fr; }
     }
 
     .action-card {
@@ -128,18 +134,18 @@
       gap: 8px;
     }
 
-    /* Embedded Pixelated SVGs Styling */
-    .mc-icon {
+    /* 1:1 Pixelated Authentic Minecraft Item Icons */
+    .mc-item {
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
       display: inline-block;
       vertical-align: middle;
-      image-rendering: pixelated;
-      shape-rendering: crispEdges;
       flex-shrink: 0;
     }
-    .mc-icon.nav { width: 20px; height: 20px; }
-    .mc-icon.card { width: 24px; height: 24px; }
-    .mc-icon.header { width: 32px; height: 32px; }
-    .mc-icon.logo-pie { width: 32px; height: 32px; }
+
+    .mc-item.nav-icon { width: 20px; height: 20px; }
+    .mc-item.card-icon { width: 24px; height: 24px; }
+    .mc-item.header-icon { width: 32px; height: 32px; }
 
     .form-group { margin-bottom: 18px; }
     label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 0.9rem; }
@@ -221,94 +227,46 @@
 
   <nav>
     <div class="logo" onclick="showPage('home')">
-      <!-- Pumpkin Pie Icon -->
-      <svg class="mc-icon logo-pie" viewBox="0 0 16 16">
-        <rect x="2" y="10" width="12" height="4" fill="#c05a11"/>
-        <rect x="1" y="8" width="14" height="2" fill="#e2882b"/>
-        <rect x="3" y="5" width="10" height="3" fill="#f8b042"/>
-        <rect x="6" y="3" width="4" height="2" fill="#ffffff"/>
-        <rect x="2" y="14" width="12" height="1" fill="#7a3403"/>
-      </svg>
+      <!-- Pumpkin Pie Texture -->
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSU24TkJggg==" alt="Pie" class="mc-item header-icon" id="img-pie">
       PieSMP
     </div>
 
+    <!-- Top Row Navigation Bar with Bug & Suggestion Placed Next to Each Other -->
     <div class="nav-links">
       <button class="nav-btn active" id="btn-home" onclick="showPage('home')">
-        <!-- Grass Icon -->
-        <svg class="mc-icon nav" viewBox="0 0 16 16">
-          <rect x="1" y="1" width="14" height="5" fill="#5b8731"/>
-          <rect x="1" y="6" width="14" height="9" fill="#866043"/>
-          <rect x="3" y="6" width="2" height="3" fill="#5b8731"/>
-          <rect x="8" y="6" width="2" height="2" fill="#5b8731"/>
-          <rect x="12" y="6" width="2" height="3" fill="#5b8731"/>
-        </svg> Home
-      </button>
-
-      <button class="nav-btn" id="btn-staff" onclick="showPage('staff')">
-        <!-- Sword Icon -->
-        <svg class="mc-icon nav" viewBox="0 0 16 16">
-          <rect x="11" y="2" width="3" height="3" fill="#47e3d4"/>
-          <rect x="9" y="4" width="3" height="3" fill="#47e3d4"/>
-          <rect x="7" y="6" width="3" height="3" fill="#47e3d4"/>
-          <rect x="5" y="8" width="3" height="3" fill="#47e3d4"/>
-          <rect x="3" y="10" width="3" height="3" fill="#2c9b91"/>
-          <rect x="2" y="12" width="3" height="2" fill="#6a492b"/>
-          <rect x="1" y="13" width="2" height="2" fill="#402813"/>
-        </svg> Our Team
-      </button>
-
-      <button class="nav-btn" id="btn-apply" onclick="showPage('apply')">
-        <!-- Book Icon -->
-        <svg class="mc-icon nav" viewBox="0 0 16 16">
-          <rect x="2" y="2" width="11" height="12" fill="#8e2a2a"/>
-          <rect x="1" y="3" width="1" height="10" fill="#5c1919"/>
-          <rect x="4" y="3" width="8" height="10" fill="#f3ebd3"/>
-          <rect x="5" y="5" width="6" height="1" fill="#40382b"/>
-          <rect x="5" y="7" width="6" height="1" fill="#40382b"/>
-          <rect x="11" y="1" width="3" height="5" fill="#ffffff"/>
-        </svg> Apply Staff
-      </button>
-
-      <button class="nav-btn" id="btn-media" onclick="showPage('media')">
-        <!-- Repeater Icon -->
-        <svg class="mc-icon nav" viewBox="0 0 16 16">
-          <rect x="1" y="10" width="14" height="4" fill="#727272"/>
-          <rect x="2" y="9" width="12" height="1" fill="#999999"/>
-          <rect x="4" y="5" width="2" height="4" fill="#666666"/>
-          <rect x="4" y="4" width="2" height="1" fill="#ff2200"/>
-          <rect x="10" y="6" width="2" height="3" fill="#666666"/>
-          <rect x="10" y="5" width="2" height="1" fill="#ff2200"/>
-        </svg> Apply Media
-      </button>
-
-      <button class="nav-btn" id="btn-appeal" onclick="showPage('appeal')">
-        <!-- Axe Icon -->
-        <svg class="mc-icon nav" viewBox="0 0 16 16">
-          <rect x="8" y="2" width="5" height="2" fill="#47e3d4"/>
-          <rect x="7" y="4" width="7" height="3" fill="#47e3d4"/>
-          <rect x="6" y="7" width="3" height="2" fill="#2c9b91"/>
-          <rect x="5" y="7" width="2" height="2" fill="#6a492b"/>
-          <rect x="3" y="9" width="2" height="2" fill="#6a492b"/>
-          <rect x="1" y="11" width="2" height="2" fill="#402813"/>
-        </svg> Ban Appeal
+        <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/block/grass_block_side.png" alt="Grass" class="mc-item nav-icon">
+        Home
       </button>
 
       <button class="nav-btn" id="btn-bugs" onclick="showPage('bugs')">
-        <!-- Barrier Icon -->
-        <svg class="mc-icon nav" viewBox="0 0 16 16">
-          <circle cx="8" cy="8" r="6" stroke="#e74c3c" stroke-width="2" fill="none"/>
-          <line x1="4" y1="4" x2="12" y2="12" stroke="#e74c3c" stroke-width="2"/>
-        </svg> Report Bug
+        <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/barrier.png" alt="Bug" class="mc-item nav-icon">
+        Report Bug
       </button>
 
       <button class="nav-btn" id="btn-suggest" onclick="showPage('suggest')">
-        <!-- Lamp Icon -->
-        <svg class="mc-icon nav" viewBox="0 0 16 16">
-          <rect x="1" y="1" width="14" height="14" fill="#71421e"/>
-          <rect x="2" y="2" width="12" height="12" fill="#f39c12"/>
-          <rect x="4" y="4" width="8" height="8" fill="#f1c40f"/>
-          <rect x="6" y="6" width="4" height="4" fill="#ffffff"/>
-        </svg> Suggest
+        <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/redstone_torch.png" alt="Suggest" class="mc-item nav-icon">
+        Suggest
+      </button>
+
+      <button class="nav-btn" id="btn-staff" onclick="showPage('staff')">
+        <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/diamond_sword.png" alt="Staff" class="mc-item nav-icon">
+        Our Team
+      </button>
+
+      <button class="nav-btn" id="btn-apply" onclick="showPage('apply')">
+        <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/writable_book.png" alt="Apply" class="mc-item nav-icon">
+        Apply Staff
+      </button>
+
+      <button class="nav-btn" id="btn-media" onclick="showPage('media')">
+        <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/repeater.png" alt="Media" class="mc-item nav-icon">
+        Apply Media
+      </button>
+
+      <button class="nav-btn" id="btn-appeal" onclick="showPage('appeal')">
+        <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/diamond_axe.png" alt="Ban Appeal" class="mc-item nav-icon">
+        Ban Appeal
       </button>
     </div>
   </nav>
@@ -317,110 +275,69 @@
 
     <div id="home" class="page active">
       <h1>
-        <svg class="mc-icon header" viewBox="0 0 16 16">
-          <rect x="1" y="1" width="14" height="5" fill="#5b8731"/>
-          <rect x="1" y="6" width="14" height="9" fill="#866043"/>
-          <rect x="3" y="6" width="2" height="3" fill="#5b8731"/>
-          <rect x="8" y="6" width="2" height="2" fill="#5b8731"/>
-          <rect x="12" y="6" width="2" height="3" fill="#5b8731"/>
-        </svg>
+        <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/block/grass_block_side.png" alt="Grass" class="mc-item header-icon">
         Welcome to PieSMP
       </h1>
       <p>PieSMP is a Minecraft Survival SMP built for community, economy, and content creation. Select an option below to apply, submit an appeal, report an issue, or leave a suggestion!</p>
       
+      <!-- Card Grid: Top Row places Report Bug and Suggestions side-by-side -->
       <div class="btn-grid">
-        <div class="action-card" onclick="showPage('staff')">
-          <h3>
-            <svg class="mc-icon card" viewBox="0 0 16 16">
-              <rect x="11" y="2" width="3" height="3" fill="#47e3d4"/>
-              <rect x="9" y="4" width="3" height="3" fill="#47e3d4"/>
-              <rect x="7" y="6" width="3" height="3" fill="#47e3d4"/>
-              <rect x="5" y="8" width="3" height="3" fill="#47e3d4"/>
-              <rect x="3" y="10" width="3" height="3" fill="#2c9b91"/>
-              <rect x="2" y="12" width="3" height="2" fill="#6a492b"/>
-              <rect x="1" y="13" width="2" height="2" fill="#402813"/>
-            </svg> Meet Staff
-          </h3>
-          <p>See our active staff members and server management.</p>
-        </div>
-
-        <div class="action-card" onclick="showPage('apply')">
-          <h3>
-            <svg class="mc-icon card" viewBox="0 0 16 16">
-              <rect x="2" y="2" width="11" height="12" fill="#8e2a2a"/>
-              <rect x="1" y="3" width="1" height="10" fill="#5c1919"/>
-              <rect x="4" y="3" width="8" height="10" fill="#f3ebd3"/>
-              <rect x="5" y="5" width="6" height="1" fill="#40382b"/>
-              <rect x="5" y="7" width="6" height="1" fill="#40382b"/>
-              <rect x="11" y="1" width="3" height="5" fill="#ffffff"/>
-            </svg> Staff App
-          </h3>
-          <p>Apply to join our moderation and server staff team.</p>
-        </div>
-
-        <div class="action-card" onclick="showPage('media')">
-          <h3>
-            <svg class="mc-icon card" viewBox="0 0 16 16">
-              <rect x="1" y="10" width="14" height="4" fill="#727272"/>
-              <rect x="2" y="9" width="12" height="1" fill="#999999"/>
-              <rect x="4" y="5" width="2" height="4" fill="#666666"/>
-              <rect x="4" y="4" width="2" height="1" fill="#ff2200"/>
-              <rect x="10" y="6" width="2" height="3" fill="#666666"/>
-              <rect x="10" y="5" width="2" height="1" fill="#ff2200"/>
-            </svg> Media App
-          </h3>
-          <p>Apply for content creator, YouTube, or Twitch roles.</p>
-        </div>
-
-        <div class="action-card" onclick="showPage('appeal')">
-          <h3>
-            <svg class="mc-icon card" viewBox="0 0 16 16">
-              <rect x="8" y="2" width="5" height="2" fill="#47e3d4"/>
-              <rect x="7" y="4" width="7" height="3" fill="#47e3d4"/>
-              <rect x="6" y="7" width="3" height="2" fill="#2c9b91"/>
-              <rect x="5" y="7" width="2" height="2" fill="#6a492b"/>
-              <rect x="3" y="9" width="2" height="2" fill="#6a492b"/>
-              <rect x="1" y="11" width="2" height="2" fill="#402813"/>
-            </svg> Ban Appeal
-          </h3>
-          <p>Banned or punished? Submit an appeal for review by staff.</p>
-        </div>
 
         <div class="action-card" onclick="showPage('bugs')">
           <h3>
-            <svg class="mc-icon card" viewBox="0 0 16 16">
-              <circle cx="8" cy="8" r="6" stroke="#e74c3c" stroke-width="2" fill="none"/>
-              <line x1="4" y1="4" x2="12" y2="12" stroke="#e74c3c" stroke-width="2"/>
-            </svg> Report Bugs
+            <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/barrier.png" alt="Bug" class="mc-item card-icon">
+            Report Bugs
           </h3>
           <p>Found a glitch or broken plugin? Let us know here.</p>
         </div>
 
         <div class="action-card" onclick="showPage('suggest')">
           <h3>
-            <svg class="mc-icon card" viewBox="0 0 16 16">
-              <rect x="1" y="1" width="14" height="14" fill="#71421e"/>
-              <rect x="2" y="2" width="12" height="12" fill="#f39c12"/>
-              <rect x="4" y="4" width="8" height="8" fill="#f1c40f"/>
-              <rect x="6" y="6" width="4" height="4" fill="#ffffff"/>
-            </svg> Suggestions
+            <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/redstone_torch.png" alt="Suggest" class="mc-item card-icon">
+            Suggestions
           </h3>
           <p>Have an idea for a feature or event? Suggest it!</p>
         </div>
+
+        <div class="action-card" onclick="showPage('staff')">
+          <h3>
+            <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/diamond_sword.png" alt="Staff" class="mc-item card-icon">
+            Meet Staff
+          </h3>
+          <p>See our active staff members and server management.</p>
+        </div>
+
+        <div class="action-card" onclick="showPage('apply')">
+          <h3>
+            <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/writable_book.png" alt="Apply" class="mc-item card-icon">
+            Staff App
+          </h3>
+          <p>Apply to join our moderation and server staff team.</p>
+        </div>
+
+        <div class="action-card" onclick="showPage('media')">
+          <h3>
+            <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/repeater.png" alt="Media" class="mc-item card-icon">
+            Media App
+          </h3>
+          <p>Apply for content creator, YouTube, or Twitch roles.</p>
+        </div>
+
+        <div class="action-card" onclick="showPage('appeal')">
+          <h3>
+            <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/diamond_axe.png" alt="Ban Appeal" class="mc-item card-icon">
+            Ban Appeal
+          </h3>
+          <p>Banned or punished? Submit an appeal for review by staff.</p>
+        </div>
+
       </div>
     </div>
 
     <div id="staff" class="page">
       <h2>
-        <svg class="mc-icon header" viewBox="0 0 16 16">
-          <rect x="11" y="2" width="3" height="3" fill="#47e3d4"/>
-          <rect x="9" y="4" width="3" height="3" fill="#47e3d4"/>
-          <rect x="7" y="6" width="3" height="3" fill="#47e3d4"/>
-          <rect x="5" y="8" width="3" height="3" fill="#47e3d4"/>
-          <rect x="3" y="10" width="3" height="3" fill="#2c9b91"/>
-          <rect x="2" y="12" width="3" height="2" fill="#6a492b"/>
-          <rect x="1" y="13" width="2" height="2" fill="#402813"/>
-        </svg> PieSMP Staff Roster
+        <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/diamond_sword.png" alt="Staff" class="mc-item header-icon">
+        PieSMP Staff Roster
       </h2>
       <p>Meet the team members keeping PieSMP safe, active, and running smoothly!</p>
 
@@ -445,14 +362,8 @@
 
     <div id="apply" class="page">
       <h2>
-        <svg class="mc-icon header" viewBox="0 0 16 16">
-          <rect x="2" y="2" width="11" height="12" fill="#8e2a2a"/>
-          <rect x="1" y="3" width="1" height="10" fill="#5c1919"/>
-          <rect x="4" y="3" width="8" height="10" fill="#f3ebd3"/>
-          <rect x="5" y="5" width="6" height="1" fill="#40382b"/>
-          <rect x="5" y="7" width="6" height="1" fill="#40382b"/>
-          <rect x="11" y="1" width="3" height="5" fill="#ffffff"/>
-        </svg> Staff Application
+        <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/writable_book.png" alt="Apply" class="mc-item header-icon">
+        Staff Application
       </h2>
       <p>Submit your application below to apply for a staff position on PieSMP.</p>
 
@@ -484,14 +395,8 @@
 
     <div id="media" class="page">
       <h2>
-        <svg class="mc-icon header" viewBox="0 0 16 16">
-          <rect x="1" y="10" width="14" height="4" fill="#727272"/>
-          <rect x="2" y="9" width="12" height="1" fill="#999999"/>
-          <rect x="4" y="5" width="2" height="4" fill="#666666"/>
-          <rect x="4" y="4" width="2" height="1" fill="#ff2200"/>
-          <rect x="10" y="6" width="2" height="3" fill="#666666"/>
-          <rect x="10" y="5" width="2" height="1" fill="#ff2200"/>
-        </svg> Media Application
+        <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/repeater.png" alt="Media" class="mc-item header-icon">
+        Media Application
       </h2>
       <p>Are you a content creator? Apply for the Media rank to gain special perks and promote your content on PieSMP!</p>
 
@@ -532,14 +437,8 @@
 
     <div id="appeal" class="page">
       <h2>
-        <svg class="mc-icon header" viewBox="0 0 16 16">
-          <rect x="8" y="2" width="5" height="2" fill="#47e3d4"/>
-          <rect x="7" y="4" width="7" height="3" fill="#47e3d4"/>
-          <rect x="6" y="7" width="3" height="2" fill="#2c9b91"/>
-          <rect x="5" y="7" width="2" height="2" fill="#6a492b"/>
-          <rect x="3" y="9" width="2" height="2" fill="#6a492b"/>
-          <rect x="1" y="11" width="2" height="2" fill="#402813"/>
-        </svg> Ban Appeal
+        <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/diamond_axe.png" alt="Ban Appeal" class="mc-item header-icon">
+        Ban Appeal
       </h2>
       <p>If you were banned or muted on PieSMP and believe it was a mistake or you deserve a second chance, please submit an appeal below.</p>
 
@@ -576,10 +475,8 @@
 
     <div id="bugs" class="page">
       <h2>
-        <svg class="mc-icon header" viewBox="0 0 16 16">
-          <circle cx="8" cy="8" r="6" stroke="#e74c3c" stroke-width="2" fill="none"/>
-          <line x1="4" y1="4" x2="12" y2="12" stroke="#e74c3c" stroke-width="2"/>
-        </svg> Report a Bug
+        <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/barrier.png" alt="Bug" class="mc-item header-icon">
+        Report a Bug
       </h2>
       <p>Please provide details on any bugs or broken features you've found on PieSMP.</p>
 
@@ -609,12 +506,8 @@
 
     <div id="suggest" class="page">
       <h2>
-        <svg class="mc-icon header" viewBox="0 0 16 16">
-          <rect x="1" y="1" width="14" height="14" fill="#71421e"/>
-          <rect x="2" y="2" width="12" height="12" fill="#f39c12"/>
-          <rect x="4" y="4" width="8" height="8" fill="#f1c40f"/>
-          <rect x="6" y="6" width="4" height="4" fill="#ffffff"/>
-        </svg> Suggest Anything
+        <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/redstone_torch.png" alt="Suggest" class="mc-item header-icon">
+        Suggest Anything
       </h2>
       <p>Have an idea to make PieSMP better? Share your ideas with the management team!</p>
 
@@ -650,6 +543,9 @@
   </div>
 
   <script>
+    // Pumpkin Pie Item Base64 fallback to guarantee pumpkin pie texture loads locally
+    document.getElementById('img-pie').src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACiSURBVDhPY2AY3mAI3f3/3/9/UDFGBiS2R04qfP/+nbFm914GhuUrFzKwsbExSAvLMPz//5/BwsKC4f///wyzZ89mgAkgmInVDgwMBkAtjIyMDIpKSgy/f/9mAMmDNOA1A2kG3A0fPnxguHLlCoMIHw8DAyMDpICBAf1fI64Y5G8Q/vv37/A4B58BA9mACp0A2A2EAgkGf/78YfDz82NgYIAG/x8A/H1f0r+N9mAAAAAElFTkSuQmCC";
+
     const BUGS_WEBHOOK_URL = "https://discord.com/api/webhooks/1535009629833265335/BPTCTw-FaiWA4txRv9QiWWtl7JifNtTVxOoCNK9naYd2gQgko6HsTRCzWRx1GQ07TW4m";
     const STAFF_WEBHOOK_URL = "https://discord.com/api/webhooks/1535012147870961736/VkC4ChBkyBYeX_4CHJzr0lKmpyLQyFSojkupLSwMxAacWnQZNLBDN4M8VZop-Dt3-q66"; 
     const MEDIA_WEBHOOK_URL = "https://discord.com/api/webhooks/1535062752987713566/vwmMtdhI81JZ7ZbGyKYESbGnTju54cfkSbJBF4a6b707xTZUlITkG402IZUWGhbx3upc";
