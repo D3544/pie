@@ -41,6 +41,39 @@
       border-bottom: 1px solid var(--border);
     }
 
+    /* Horizontal Landscape Navigation for Items */
+    .nav-links {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-direction: row; /* Landscape alignment */
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+
+    .nav-btn {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-muted);
+      padding: 8px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9rem;
+      white-space: nowrap;
+    }
+
+    .nav-btn:hover, .nav-btn.active {
+      color: var(--accent);
+      border-color: var(--accent);
+      background: rgba(255, 159, 28, 0.05);
+    }
+
+    /* PieSMP Logo placed explicitly on the Right Header */
     .logo {
       font-size: 1.4rem;
       font-weight: bold;
@@ -49,34 +82,8 @@
       display: flex;
       align-items: center;
       gap: 10px;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-
-    .nav-btn {
-      background: transparent;
-      border: 1px solid transparent;
-      color: var(--text-muted);
-      padding: 8px 10px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: 600;
-      transition: all 0.2s;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 0.9rem;
-    }
-
-    .nav-btn:hover, .nav-btn.active {
-      color: var(--accent);
-      border-color: var(--accent);
-      background: rgba(255, 159, 28, 0.05);
+      margin-left: 20px;
+      white-space: nowrap;
     }
 
     .container {
@@ -99,18 +106,18 @@
     h1, h2 { color: var(--accent); margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
     p { color: var(--text-muted); line-height: 1.6; margin-bottom: 20px; }
 
+    /* Action Cards organized in a Landscape Layout */
     .btn-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
       gap: 15px;
       margin-top: 25px;
     }
 
-    @media (max-width: 600px) {
-      .btn-grid { grid-template-columns: 1fr; }
-    }
-
     .action-card {
+      flex: 1 1 calc(50% - 15px);
+      min-width: 260px;
       background: #0d0d14;
       border: 1px solid var(--border);
       padding: 20px;
@@ -134,7 +141,7 @@
       gap: 8px;
     }
 
-    /* 1:1 Pixelated Authentic Minecraft Item Icons */
+    /* Pixelated Minecraft Icons */
     .mc-item {
       image-rendering: pixelated;
       image-rendering: crisp-edges;
@@ -181,12 +188,14 @@
     .submit-btn:hover { background: var(--accent-hover); }
 
     .staff-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
       gap: 15px;
       margin-top: 15px;
     }
     .staff-card {
+      flex: 1 1 180px;
       background: #0d0d14;
       border: 1px solid var(--border);
       padding: 20px 15px;
@@ -226,7 +235,7 @@
 <body>
 
   <nav>
-    <!-- Navigation Items on the Left -->
+    <!-- Left Side Nav Buttons (Landscape Row Layout) -->
     <div class="nav-links">
       <button class="nav-btn active" id="btn-home" onclick="showPage('home')">
         <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/block/grass_block_side.png" alt="Grass" class="mc-item nav-icon">
@@ -264,7 +273,7 @@
       </button>
     </div>
 
-    <!-- PieSMP Logo + Pumpkin Pie Icon positioned on the Top Right Corner -->
+    <!-- Right Side Logo (PieSMP + Pumpkin Pie Header Icon) -->
     <div class="logo" onclick="showPage('home')">
       PieSMP
       <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/item/pumpkin_pie.png" alt="Pie" class="mc-item header-icon">
@@ -280,6 +289,7 @@
       </h1>
       <p>PieSMP is a Minecraft Survival SMP built for community, economy, and content creation. Select an option below to apply, submit an appeal, report an issue, or leave a suggestion!</p>
       
+      <!-- Horizontal / Landscape Block Cards Layout -->
       <div class="btn-grid">
 
         <div class="action-card" onclick="showPage('bugs')">
